@@ -3,42 +3,45 @@ package progConc;
 public class ThreadPool {
 	
 	private ConcurVector vector;
+	private ConcurVector vectorModificado;
 	private int dimension;
 	private int threads;
-	private int load;
 	private int inicio;
 	private int fin;
 	private int rango;
 	private int resto;
 	private  Thread [] workers;
-	private Worker worker;
 	private Operacion operacion;
 	private MonitorAccionesWorker monitor;
 	
+	
+	/** La clase se encarga de instanciar e iniciar la cantidad de workers correspondientes
+	 * a los valores de los parámetros  threads y load. */
+
 	public ThreadPool() {
 				
-		
-		this.load = 2;
 		this.inicio= 0;
 		this.fin= 0;
 		this.monitor= new MonitorAccionesWorker();
 		
 		
 	}
-		
-		public void initializeWorkers(Operacion operacion,ConcurVector vector,int threads) {
-			this.vector =vector;
+	/** Inicializa e innstancia los workers
+	 * @param Operacion, es la operacion que van a realizar los workers
+	 * @param auxVector, es la instancia de la clase que representa el vector que dispara la operacion
+	 * @param Operacion, es la instancia de la clase que representa el vector que en general fue pasado por parámetro por la operacion
+	 * @precondition  Ambos vectores tienen la misma dimension
+	 */
+		public void initializeWorkers(Operacion operacion,ConcurVector auxVector,ConcurVector auxVectorModificado) {
+			this.vector =auxVector;
+			this.vectorModificado= auxVectorModificado;
 			this.operacion= operacion;
-			this.dimension= vector.dimension();
-			this.threads= threads;
-			this.workers = new Thread [this.dimension];
-			this.rango= (this.workers.length / this.threads);
-			this.resto= (this.workers.length % this.threads); 
-			System.out.println("La dimension del vector es : "+ this.workers.length );
-			System.out.println("La cantidad de threads es:  " + this.threads );
-			System.out.println("El rango es:  " + this.rango);
-			System.out.println("el resto es:  " + this.resto );
-			
+			this.dimension= auxVector.dimension();
+			this.threads= auxVector.getThread();
+			this.workers = new Thread [this.threads];
+			this.rango= (this.dimension / this.threads);
+			this.resto= (this.dimension % this.threads); 
+											
 			this.inicio= 0;
 			this.fin = this.rango;
 			
@@ -48,13 +51,18 @@ public class ThreadPool {
 				this.fin ++;
 			}
 			
-			 this.workers[i]= new Worker (monitor, this.operacion,this.vector,i,this.inicio,this.fin);
-			 this.workers[i].start();
+			 this.workers[i]= new Worker (this.monitor, this.operacion,this.vector,this.vectorModificado,i,this.inicio,this.fin);
+			
 			
 			 this.inicio= this.fin;
 		     this.fin = this.fin + this.rango;
 			    
 		}
+			
+			for (int i= 0; i < this.threads; i++) {
+				this.workers[i].start();
+			}
+			
 			
 			for (int i= 0; i < this.threads; i++) {
 		
@@ -69,7 +77,8 @@ public class ThreadPool {
         
 		}	
 		
-		
+	
+			
 }	
 		
 		
