@@ -26,6 +26,8 @@ public class ThreadPool {
 		
 		
 	}
+	
+		
 	/** Inicializa e innstancia los workers
 	 * @param Operacion, es la operacion que van a realizar los workers
 	 * @param auxVector, es la instancia de la clase que representa el vector que dispara la operacion
@@ -41,6 +43,7 @@ public class ThreadPool {
 			this.workers = new Thread [this.threads];
 			this.rango= (this.dimension / this.threads);
 			this.resto= (this.dimension % this.threads); 
+			
 											
 			this.inicio= 0;
 			this.fin = this.rango;

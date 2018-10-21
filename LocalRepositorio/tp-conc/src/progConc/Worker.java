@@ -11,6 +11,7 @@ public class Worker extends Thread {
    
 	private  int contThreads=0 ;
 	private ConcurVector vector1;
+	private ConcurVector vector2;
 	private ConcurVector vectorModificado;
 	private  int id;
 	private int inicio;
@@ -31,11 +32,12 @@ public class Worker extends Thread {
 	*/
     
 	
-	public Worker ( MonitorAccionesWorker monitor,Operacion operacion,ConcurVector vector,ConcurVector vectorModificado,int id, int inicio, int fin ) {
+	public Worker ( MonitorAccionesWorker monitor,Operacion operacion,ConcurVector vector1,ConcurVector vectorModificado, int id, int inicio, int fin ) {
 		
 	this.monitor= monitor;
 	this.operacion= operacion;
-	this.vector1= vector;
+	this.vector1= vector1;
+	
 	this.vectorModificado= vectorModificado;
 	this.id= id;
 	this.inicio= inicio;
@@ -44,10 +46,58 @@ public class Worker extends Thread {
 
 	}
 
-	/** Obtiene la suma de todos los elementos del vector. */
+		
 	
+	/* Obtiene el valor absoluto de cada elemento del vector.*/ 
+	public void abs() {
+		
+		for (int i= this.inicio; i < this.fin; i++) {
+			
+			//this.vector1.set(i, Math.abs(this.vector1.get(i)));
+			this.vector1.getBuffer().write(Math.abs(this.vector1.get(i)));
+			this.vector1.set(i, (double)this.vector1.getBuffer().read());	
+		}
+	}
+	
+	
+	public double mean() {
+        	double total = vector1.sum();
+        	return total / vector1.dimension();
+	
+	}
+    
+	/** Retorna el producto de este vector con otro.
+     * El producto vectorial consiste en la suma de los productos
+     * de cada coordenada.
+	 * @param v, el vector a usar para realizar el producto.
+	 * @precondition dimension() == v.dimension(). 
+	public double prod(ConcurVector v) {
+	/*	SeqVector aux = new SeqVector(dimension());
+		aux.assign(this);
+		aux.mul(v);
+	
+		return aux.sum();
+
+	}
+	
+	
+	/** Retorna la norma del vector.
+     *  Recordar que la norma se calcula haciendo la raiz cuadrada de la
+     *  suma de los cuadrados de sus coordenadas.
+     
+	public double norm() {
+		/*	SeqVector aux = new SeqVector(dimension());
+		aux.assign(this);
+		aux.mul(this);
+		return Math.sqrt(aux.sum());
+	
+	}
+	
+	
+	*/
+	
+	 /** Obtiene el valor promedio en el vector. */
 	public void sum(){
-	
 		 
 		double result = 0;
 		
@@ -70,16 +120,14 @@ public class Worker extends Thread {
 		     this.contThreads=this.monitor.decrementarThreads();
 		   
 	   }
-         
-	      
+     	      
 	 } 
 	
 	 /** Obtiene el valor maximo en el vector. */
 	
 	public void max() {
-        
-	        
-        double current_max = 0;
+        	        
+       double current_max = vector1.get(0);
 		
  	   this.contThreads=this.monitor.contThreads();  	
  		
@@ -108,8 +156,10 @@ public class Worker extends Thread {
 	public  void set(double d) {
 				
 		for (int i= this.inicio; i < this.fin; i++) {
-		   this.vector1.set(i, d);	
-			
+		  	  
+		   this.vector1.getBuffer().write(d);
+		   this.vector1.set(i, (double)this.vector1.getBuffer().read());	
+		   
 	}
 }
 	
@@ -118,11 +168,33 @@ public class Worker extends Thread {
 	 */
 	public void assign() {
 		
-		for (int i= this.inicio; i < this.fin; i++) 
-			this.vector1.set(i, vectorModificado.get(i));
+		for (int i= this.inicio; i < this.fin; i++) {
+						
+		  // this.vector1.set(i, vectorModificado.get(i));
+		 		   
+		   this.vector1.getBuffer().write(this.vectorModificado.get(i));
+		   this.vector1.set(i, (double)this.vector1.getBuffer().read());	
+	}
 	}
 	
 	
+	/** Copia algunos valores de otro vector sobre este vector.
+	 * Un vector mascara indica cuales valores deben copiarse.
+	 * @param mask, vector que determina si una posicion se debe copiar.
+	 * @param v, el vector del que se tomaran los valores nuevos.
+	 * @precondition dimension() == mask.dimension() && dimension() == v.dimension(). */
+	
+	public void assignConMask(ConcurVector mask)	 {
+		this.vector2=mask;
+		for (int i= this.inicio; i < this.fin; i++) {
+		    if (this.vector2.get(i) >= 0){
+		
+			this.vector1.getBuffer().write(this.vectorModificado.get(i));
+			this.vector1.set(i, (double)this.vector1.getBuffer().read());
+		    }	
+		}
+	
+	}
 	/** Propósito: Multiplica los elementosde un vector con otro uno a uno
 	 * 
 	 */
