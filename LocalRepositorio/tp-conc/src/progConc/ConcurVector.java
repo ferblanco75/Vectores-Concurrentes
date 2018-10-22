@@ -45,7 +45,7 @@ public class ConcurVector {
 	
 		
 	// Devuelve el numero de threads del vector
-	public int getThread () {
+	public int getThread() {
 		return this.threads;
 	}
 	
@@ -82,20 +82,39 @@ public class ConcurVector {
 	
 	/** Obtiene el valor absoluto de cada elemento del vector. */
 	public synchronized void abs() {
+		
+		if ( ! (this.dimension()<=0 || this.getThread()<=0 || this.dimension()< this.getThread())){
+				
+		
 		Operacion operacion= new Abs() ;	
 		
 		ConcurVector aux = new ConcurVector(this.dimension(),this.getThread());
 					
 		this.threadPool.initializeWorkers(operacion,this,aux);
-	
+		
+		}
+		
+		else {
+			JOptionPane.showMessageDialog(null, "Número inválido, no se puede realizar la operación Abs");
+			 
+	       } 
 	}
-	
-	
+
+		
 	 /** Obtiene el valor promedio en el vector. */
 	
 	public synchronized double mean() {
+		if ( ! (this.dimension()<=0 || this.getThread()<=0 || this.dimension()< this.getThread())){
+		
         	double total = this.sum();
         	return total / this.dimension();
+        	
+		}
+		
+		else {
+			JOptionPane.showMessageDialog(null, "Número inválido, no se puede realizar la operación Mean");
+			return 0;
+	       } 
 	}
     
 	
@@ -106,11 +125,20 @@ public class ConcurVector {
 	 * @param v, el vector a usar para realizar el producto.
 	 * @precondition dimension() == v.dimension(). */
 	public synchronized double prod(ConcurVector v) {
+		if ( ! (this.dimension()<=0 || this.getThread()<=0 || this.dimension()< this.getThread())){
+		
 		ConcurVector aux = new ConcurVector(this.dimension(),this.getThread());
 		aux.setBuffer(this.getBuffer());
 		aux.assign(this);
 		aux.mul(v);
 		return aux.sum();
+		
+}
+		
+		else {
+			JOptionPane.showMessageDialog(null, "Número inválido, no se puede realizar la operación Prod");
+			return 0;
+	       } 
 	}
 	
 	
@@ -119,11 +147,20 @@ public class ConcurVector {
      *  suma de los cuadrados de sus coordenadas.
      */
 	public synchronized double norm() {
+		if ( ! (this.dimension()<=0 || this.getThread()<=0 || this.dimension()< this.getThread())){
+		
 		ConcurVector aux = new ConcurVector(this.dimension(),this.getThread());
 		aux.setBuffer(this.getBuffer());
 		aux.assign(this);
 		aux.mul(this);
 		return Math.sqrt(aux.sum());
+		
+}
+		
+		else {
+			JOptionPane.showMessageDialog(null, "Número inválido, no se puede realizar la operación Norm");
+			return 0;
+	       } 
 	}
 	
 	
@@ -132,12 +169,20 @@ public class ConcurVector {
 	 * @param d, el valor a ser asignado. */
 	
 	public synchronized void set(double d) {
-		
-		ConcurVector aux = new ConcurVector(this.dimension(),this.getThread());
+		if ( ! (this.dimension()<=0 || this.getThread()<=0 || this.dimension()< this.getThread())){
+	
+			ConcurVector aux = new ConcurVector(this.dimension(),this.getThread());
 			
-		Operacion operacion= new Set(d) ;	
+		     Operacion operacion= new Set(d) ;	
 		
-	   this.threadPool.initializeWorkers(operacion,this,aux);
+	          this.threadPool.initializeWorkers(operacion,this,aux);
+	          
+}
+		
+		else {
+			JOptionPane.showMessageDialog(null, "Número inválido, no se puede realizar la operación Set (d)");
+			
+	       } 
 	}
 	
 	
@@ -145,17 +190,35 @@ public class ConcurVector {
 	 * @param v, el vector del que se tomaran los valores nuevos.
 	 * @precondition dimension() == v.dimension(). */
 	public synchronized void assign(ConcurVector vector) {
+		if ( ! ((this.dimension()<=0 || this.getThread()<=0 || this.dimension()< this.getThread())
+				|| (vector.dimension()<=0 || vector.getThread()<=0 || vector.dimension()< vector.getThread()) ) ) {
 		
-		Operacion operacion= new Assign() ;	
+			Operacion operacion= new Assign() ;	
 		
-		this.threadPool.initializeWorkers(operacion,this,vector);
+		    this.threadPool.initializeWorkers(operacion,this,vector);
+		    
+		}	
+		else {
+			JOptionPane.showMessageDialog(null, "Número inválido, no se puede realizar la operación Assign");
+			 
+	       } 
 	}
 	
 	
 	public synchronized void assign(ConcurVector mask, ConcurVector vector){ 
-       Operacion operacion= new AssignConMask(mask) ;	
+		
+		if ( ! (   (this.dimension()<=0 || this.getThread()<=0 || this.dimension()< this.getThread())
+			|| (mask.dimension()<=0 || mask.getThread()<=0 || mask.dimension()< mask.getThread())  
+			|| (vector.dimension()<=0 || vector.getThread()<=0 || vector.dimension()< vector.getThread())  )  ){
+		
+			Operacion operacion= new AssignConMask(mask) ;	
 			
-		this.threadPool.initializeWorkers(operacion,this,vector);
+		    this.threadPool.initializeWorkers(operacion,this,vector);
+	}	
+		else {
+			JOptionPane.showMessageDialog(null, "Número inválido, no se puede realizar la operación AssignConMask");
+			 
+	       } 
 			
 	}
 	
@@ -164,11 +227,20 @@ public class ConcurVector {
 	 * @param v, el vector con los valores a multiplicar.
 	 * @precondition dimension() == v.dimension(). */
 	  public synchronized void mul(ConcurVector vector) {
-		
-		Operacion operacion= new Mul();	
-		
-		this.threadPool.initializeWorkers(operacion,this,vector);
-		
+		  if ( ! ((this.dimension()<=0 || this.getThread()<=0 || this.dimension()< this.getThread())
+					|| (vector.dimension()<=0 || vector.getThread()<=0 || vector.dimension()< vector.getThread())) ) {
+		 	 
+		  Operacion operacion= new Mul();	
+				
+			 this.threadPool.initializeWorkers(operacion,this,vector);
+					  	  
+		  }
+		 
+		  else {
+				JOptionPane.showMessageDialog(null, "Número inválido, no se puede realizar la operación Mul");
+				
+		       } 
+			
 	}	
 	
 	
@@ -176,17 +248,27 @@ public class ConcurVector {
 	 * @param v, el vector con los valores a sumar.
 	 * @precondition dimension() == v.dimension(). */
 	 public synchronized void add(ConcurVector vector) {
+		 if ( ! ((this.dimension()<=0 || this.getThread()<=0 || this.dimension()< this.getThread())
+					|| (vector.dimension()<=0 || vector.getThread()<=0 || vector.dimension()< vector.getThread())) ) {
 		
-		Operacion operacion= new Add();
+		 Operacion operacion= new Add();
 			
 		this.threadPool.initializeWorkers(operacion,this,vector);
+		
+		 }
+		 
+		  else {
+				JOptionPane.showMessageDialog(null, "Número inválido, no se puede realizar la operación Add");
+				
+		       } 
 		
 	}
 	
 		
 	/** Obtiene la suma de todos los valores del vector. */
 	   public synchronized double sum() {
-		  int rango;
+		   if ( ! (this.dimension()<=0 || this.getThread()<=0 || this.dimension()< this.getThread())){
+		   int rango;
 		   int diferenciaThreadsRango=1;
 		   Operacion operacion= new Sum();	
 			  	   
@@ -213,11 +295,20 @@ public class ConcurVector {
 			
 	}	
 	  		  
-		 return ( aux.get(0)); 
+	 return ( aux.get(0)); 
   
+		  
+	   }   
+			 
+			  else {
+					JOptionPane.showMessageDialog(null, "Número inválido, no se puede realizar la operación Sum");
+					return 0;
+			       } 
+		 
 }
 	   /** Obtiene el valor maximo en el vector. */
 	   public synchronized double max() {
+		   if ( ! (this.dimension()<=0 || this.getThread()<=0 || this.dimension()< this.getThread())){  
 		   int rango;
 		   int diferenciaThreadsRango=1;
 		   Operacion operacion= new Max();	
@@ -244,7 +335,14 @@ public class ConcurVector {
    }	
 	 	  		  
 	  return ( aux.get(0));
-   }
+		   }   
+			 
+			  else {
+					JOptionPane.showMessageDialog(null, "Número inválido, no se puede realizar la operación Max");
+					return 0;
+			       } 
 	   
  
+}
 }	   
+	   

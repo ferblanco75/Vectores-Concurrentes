@@ -3,6 +3,8 @@
  */
 package progConc;
 
+import javax.swing.JOptionPane;
+
 /**
  @Propósito :  La clase  representa un trhead que hereda de la clase Thread
       
@@ -203,13 +205,13 @@ public class Worker extends Thread {
 		 * 
 		 */	
 	public void run () {
-	
-	  this.operacion.operar(this);
+				
+		this.operacion.operar(this);
 	
 		
 	}
+		
+
+
 }
-	
-
-
 

@@ -1,5 +1,7 @@
 package progConc;
 
+import javax.swing.JOptionPane;
+
 public class ThreadPool {
 	
 	private ConcurVector vector;
@@ -44,7 +46,8 @@ public class ThreadPool {
 			this.rango= (this.dimension / this.threads);
 			this.resto= (this.dimension % this.threads); 
 			
-											
+			
+														
 			this.inicio= 0;
 			this.fin = this.rango;
 			
@@ -65,23 +68,28 @@ public class ThreadPool {
 				this.workers[i].start();
 			}
 			
-		
-			for (int i= 0; i < this.threads; i++) {
-		
+                for (int i= 0; i < this.threads; i++) {
+				
 				try {
 					this.workers[i].join();
 				} catch (InterruptedException e) {
 					
 					e.printStackTrace();
 				}
-		}
-     
-      
-		}
-	
-
+		      }
 			
-}	
+			}
+			
+				
+		
+		}	
+			
+ 
+	
+	
+		
+			
+
 		
 		
 		

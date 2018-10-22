@@ -25,7 +25,7 @@ public class Principal {
 		ConcurVector vector1= new ConcurVector(7,3);
 		vector1.setBuffer(buffer3);
 		
-		ConcurVector vector2= new ConcurVector(7,3);
+		ConcurVector vector2= new ConcurVector(1,3);
 		vector2.setBuffer(buffer4);
 		
 		ConcurVector vector3= new ConcurVector(7,3);
@@ -35,7 +35,7 @@ public class Principal {
 		ConcurVector vector4= new ConcurVector(4,2);
 		vector4.setBuffer(buffer3);
 	    
-		ConcurVector mask= new ConcurVector(7,3);
+		ConcurVector mask= new ConcurVector(1,3);
 	  		mask.setBuffer(buffer2);
 		 
 	  		ConcurVector v= new ConcurVector(7,3);
@@ -77,7 +77,8 @@ public class Principal {
 			System.out.println ("//");
 			
 			 
-			   vector1.mul(vector2);	  
+			   vector1.mul(vector2);
+			   
 			 
 			  for (int i=0;i < vector1.dimension();i++ ) {
 					System.out.println (vector1.get(i));		
@@ -85,7 +86,7 @@ public class Principal {
 			  System.out.println ("//");
 			 
 			
-	   
+	  
 			  
 			  vector1.add(vector2);
 			  
@@ -133,14 +134,15 @@ public class Principal {
 			 
 			     	 				  
 					  mask.set(0, -1);
+					 /*
 					  mask.set(1, 1);
 					  mask.set(2, 1);
 					  mask.set(3, 1);
 					  mask.set(4, 1);
 					  mask.set(5, 1);
 					  mask.set(6, 1);
-					//  mask.set(7, -1);
-					  
+					  mask.set(7, -1);
+					*/  
 					  for (int i=0;i < vector1.dimension();i++ ) {
 							int d= i+1;
 							vector1.set(i,d);		
@@ -202,7 +204,7 @@ public class Principal {
 										}	
 								  System.out.println ("El promedio de vector es:= " + promedio);
 								  System.out.println ("//"); 
-	    
+	   
 		}
 		
 		
