@@ -2,89 +2,69 @@
  * 
  */
 package progConc;
+import javax.swing.JOptionPane;
 
-/**
- * @author COMMODORE1
- *
- */
 public class ConcurVector {
 	/** La clase representa un vector de longitud fija de 
 	 * numeros de punto flotante. */
 
-	
-    private ConcurVector auxVector;
-    private ConcurVector auxVectorModificado;
-    private static int load= 2;
-	private int dimension, threads, diferenciaThreadsRango;
+	private static int load= 2;
+	private int dimension, threads;
 	
 	// El array con los elementos del vector
 	private double [] elements;
-	
-	
-	private ThreadPool threadPool= new ThreadPool ();
+	private ThreadPool threadPool;
 	private Buffer buffer;
-	private int rango;
-	
-	/** Constructor del ConcurVector.
-	 * @param dimension, la longitud del vector.
-	 * @precondition dimension > 0. */
-	public ConcurVector(int dimension) {
 		
-		this.dimension= dimension;
-		this.elements= new  double[dimension];
-		this.setBuffer();
-		this.threadPool= threadPool;
-				
-	}	
 	/** Constructor del ConcurVector.
 	 * @param dimension, la longitud del vector.
 	 * @precondition dimension > 0. */
 	public ConcurVector(int dimension, int threads) {
 		
-		this (dimension);
-		this.threads= threads;
+	     	this.dimension= dimension;
+			this.elements= new  double[dimension];
+			this.threadPool=  new ThreadPool ();
+			this.threads= threads;
 		
-				
-	}
+	}			
 		
+			
 	public int load() {
 		return this.load;
 	}
 	
-	/** Crea un Buffer con
-	 * numeros de punto flotante de dimension igual a los elemnentos del vector. */
-	public void setBuffer() {
-		this.buffer= new Buffer (this.dimension);
-	}
+	// Se configura el Buffer
+	public void setBuffer(Buffer buffer) {
+		this.buffer= buffer;
+		}
 	
+	// Devuelve un  Buffer
 	public Buffer getBuffer(){
-		return this.buffer;
-	}
+	   return this.buffer;
+    }
 	
 		
-	
+	// Devuelve el numero de threads del vector
 	public int getThread () {
 		return this.threads;
 	}
 	
-	
+	//Deuelve un Thread Pool
 	public ThreadPool getThreadPool(){
 		return this.threadPool;
 	}
 	
-	
-	
-	
+		
 	/** Retorna la longitud del vector; es decir, su dimension. */
 	public int dimension() {
 		return elements.length;
-	}
+	 }
 	
 	
 	/** Retorna el elemento del vector en la posicion i.
 	 * @param i, la posicion del elemento a ser retornado.
 	 * @precondition 0 <= i < dimension(). */
-	public double get(int i) {
+	 public double get(int i) {
 		return elements[i];
 	}
 	
@@ -93,7 +73,7 @@ public class ConcurVector {
 	 * @param i, la posicion a setear.
 	 * @param d, el valor a ser asignado en la posicion i.
 	 * @precondition 0 <= i < dimension. */
-	public void set(int i, double d) {
+	 public void set(int i, double d) {
 		elements[i] = d;
 	}
 	
@@ -101,11 +81,12 @@ public class ConcurVector {
 	
 	
 	/** Obtiene el valor absoluto de cada elemento del vector. */
-	public void abs() {
+	public synchronized void abs() {
 		Operacion operacion= new Abs() ;	
 		
-			
-		this.threadPool.initializeWorkers(operacion,this,this.auxVector);
+		ConcurVector aux = new ConcurVector(this.dimension(),this.getThread());
+					
+		this.threadPool.initializeWorkers(operacion,this,aux);
 	
 	}
 	
@@ -124,8 +105,9 @@ public class ConcurVector {
      * de cada coordenada.
 	 * @param v, el vector a usar para realizar el producto.
 	 * @precondition dimension() == v.dimension(). */
-	public double prod(ConcurVector v) {
+	public synchronized double prod(ConcurVector v) {
 		ConcurVector aux = new ConcurVector(this.dimension(),this.getThread());
+		aux.setBuffer(this.getBuffer());
 		aux.assign(this);
 		aux.mul(v);
 		return aux.sum();
@@ -136,8 +118,9 @@ public class ConcurVector {
      *  Recordar que la norma se calcula haciendo la raiz cuadrada de la
      *  suma de los cuadrados de sus coordenadas.
      */
-	public double norm() {
+	public synchronized double norm() {
 		ConcurVector aux = new ConcurVector(this.dimension(),this.getThread());
+		aux.setBuffer(this.getBuffer());
 		aux.assign(this);
 		aux.mul(this);
 		return Math.sqrt(aux.sum());
@@ -151,12 +134,12 @@ public class ConcurVector {
 	public synchronized void set(double d) {
 		
 		ConcurVector aux = new ConcurVector(this.dimension(),this.getThread());
-		aux.assign(this);
-	Operacion operacion= new Set(d) ;	
-	
-	
-	this.threadPool.initializeWorkers(operacion,this,aux);
+			
+		Operacion operacion= new Set(d) ;	
+		
+	   this.threadPool.initializeWorkers(operacion,this,aux);
 	}
+	
 	
 	/** Copia los valores de otro vector sobre este vector.
 	 * @param v, el vector del que se tomaran los valores nuevos.
@@ -165,29 +148,24 @@ public class ConcurVector {
 		
 		Operacion operacion= new Assign() ;	
 		
-		
 		this.threadPool.initializeWorkers(operacion,this,vector);
-		
 	}
 	
 	
 	public synchronized void assign(ConcurVector mask, ConcurVector vector){ 
        Operacion operacion= new AssignConMask(mask) ;	
-		
-		
+			
 		this.threadPool.initializeWorkers(operacion,this,vector);
 			
-		
 	}
 	
 	/** Multiplica los valores de este vector con los de otro
      *  (uno a uno).
 	 * @param v, el vector con los valores a multiplicar.
 	 * @precondition dimension() == v.dimension(). */
-	public synchronized void mul(ConcurVector vector) {
+	  public synchronized void mul(ConcurVector vector) {
 		
 		Operacion operacion= new Mul();	
-		
 		
 		this.threadPool.initializeWorkers(operacion,this,vector);
 		
@@ -197,12 +175,10 @@ public class ConcurVector {
 	/** Suma los valores de este vector con los de otro (uno a uno).
 	 * @param v, el vector con los valores a sumar.
 	 * @precondition dimension() == v.dimension(). */
-	public synchronized void add(ConcurVector vector) {
+	 public synchronized void add(ConcurVector vector) {
 		
 		Operacion operacion= new Add();
-		
-	
-		
+			
 		this.threadPool.initializeWorkers(operacion,this,vector);
 		
 	}
@@ -213,24 +189,24 @@ public class ConcurVector {
 		  int rango;
 		   int diferenciaThreadsRango=1;
 		   Operacion operacion= new Sum();	
-		
-		  	   
+			  	   
 		   ConcurVector aux = new ConcurVector(this.dimension(),this.getThread());
 		  
-			aux.assign(this);
-		    
+			 aux.setBuffer(this.getBuffer());
+			 aux.assign(this);
 		     rango= aux.dimension()/aux.getThread();
 		   
 		
 			  while (aux.dimension() > 1) {
 		
-		    if (rango != aux.getThread()) {
-			      diferenciaThreadsRango = Math.abs(aux.getThread() -  rango); 
-		     }
+	     	     if (rango != aux.getThread()) {
+	 	   	          diferenciaThreadsRango = Math.abs(aux.getThread() -  rango); 
+		         }
 		    		  
 		    ConcurVector auxModificado = new ConcurVector(aux.getThread(),diferenciaThreadsRango);
-		  
-		  this.threadPool.initializeWorkers(operacion,aux,auxModificado);
+		    
+		    auxModificado.setBuffer(this.getBuffer());
+		    this.threadPool.initializeWorkers(operacion,aux,auxModificado);
 		  		 		
 		   aux= auxModificado;
 		   rango= aux.dimension()/aux.getThread(); 
@@ -248,7 +224,8 @@ public class ConcurVector {
 	  		    
 	    ConcurVector aux = new ConcurVector(this.dimension(),this.getThread());
 	  
-		aux.assign(this);
+	      aux.setBuffer(this.getBuffer());
+		  aux.assign(this);
 	    
 	     rango= aux.dimension()/aux.getThread();
 	   
@@ -258,7 +235,7 @@ public class ConcurVector {
 	     			      diferenciaThreadsRango = Math.abs(aux.getThread() -  rango); 
 	     		     }
 	            	   ConcurVector auxModificado = new ConcurVector(aux.getThread(),diferenciaThreadsRango);
-	         		 
+	            	   auxModificado.setBuffer(this.getBuffer());
 	         		  this.threadPool.initializeWorkers(operacion,aux,auxModificado);
 	         		  		 		
 	         		   aux= auxModificado;

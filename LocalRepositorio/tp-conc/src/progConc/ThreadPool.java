@@ -16,22 +16,22 @@ public class ThreadPool {
 	
 	
 	/** La clase se encarga de instanciar e iniciar la cantidad de workers correspondientes
-	 * a los valores de los parámetros  threads y load. */
+	 * a los valores de los parámetros  threads y load. 
+	 * @param buffer */
 
 	public ThreadPool() {
 				
 		this.inicio= 0;
 		this.fin= 0;
 		this.monitor= new MonitorAccionesWorker();
-		
-		
+			
 	}
 	
 		
 	/** Inicializa e innstancia los workers
 	 * @param Operacion, es la operacion que van a realizar los workers
 	 * @param auxVector, es la instancia de la clase que representa el vector que dispara la operacion
-	 * @param Operacion, es la instancia de la clase que representa el vector que en general fue pasado por parámetro por la operacion
+	 * @param auxVectorModificado, es la instancia de la clase que representa el vector que en general fue pasado por parámetro por la operacion
 	 * @precondition  Ambos vectores tienen la misma dimension
 	 */
 		public void initializeWorkers(Operacion operacion,ConcurVector auxVector,ConcurVector auxVectorModificado) {
@@ -55,8 +55,7 @@ public class ThreadPool {
 			}
 			
 			 this.workers[i]= new Worker (this.monitor, this.operacion,this.vector,this.vectorModificado,i,this.inicio,this.fin);
-			
-			
+			 			
 			 this.inicio= this.fin;
 		     this.fin = this.fin + this.rango;
 			    
@@ -66,21 +65,21 @@ public class ThreadPool {
 				this.workers[i].start();
 			}
 			
-			
+		
 			for (int i= 0; i < this.threads; i++) {
 		
 				try {
 					this.workers[i].join();
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
+					
 					e.printStackTrace();
 				}
 		}
+     
       
-        
-		}	
-		
+		}
 	
+
 			
 }	
 		
