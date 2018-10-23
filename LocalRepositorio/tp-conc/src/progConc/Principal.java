@@ -32,7 +32,7 @@ public class Principal {
 		
 		vector3.setBuffer(buffer2);
 	
-		ConcurVector vector4= new ConcurVector(1,2);
+		ConcurVector vector4= new ConcurVector(4,2);
 		vector4.setBuffer(buffer3);
 	    
 		ConcurVector mask= new ConcurVector(7,3);
