@@ -7,7 +7,7 @@ import java.io.IOException;
 
 public class VectorTest {
     @Test
-    public void testTamanioVector(){
+    public void testTamanioVectorConcurrente(){
         Assert.assertTrue(true);
     }
 
