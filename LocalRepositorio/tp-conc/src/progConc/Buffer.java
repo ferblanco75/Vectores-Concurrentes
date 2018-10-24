@@ -78,7 +78,7 @@ public class Buffer {
 		@Param begin, es un entero positivo que indica en que posición se va a escribir el buffer 
 		@Param begin, es un entero positivo que indica en que posición se va a leer del buffer 
 		*/
-		private boolean isEmpty () { return begin == end; }
+		public boolean isEmpty () { return begin == end; }
 		
 		/**
 		@Propósito :Devuelve true en caso que el buffer esté lleno.
@@ -86,7 +86,7 @@ public class Buffer {
 		@Param begin, es un entero positivo que indica en que posición se va a escribir el buffer 
 		@Param begin, es un entero positivo que indica en que posición se va a leer del buffer 
 		*/
-		private boolean isFull () { return next ( begin ) == end ; }
+		public boolean isFull () { return next ( begin ) == end ; }
 		
 		/**
 		@Propósito :Devuelve la próxima posición del buffer.
