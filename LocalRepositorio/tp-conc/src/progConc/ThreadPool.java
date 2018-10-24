@@ -57,7 +57,7 @@ public class ThreadPool {
 				this.fin ++;
 			}
 			
-			 this.workers[i]= new Worker (this.monitor, this.operacion,this.vector,this.vectorModificado,i,this.inicio,this.fin);
+			 this.workers[i]= new Worker (this.monitor, this.operacion,this.vector,this.vectorModificado, i,this.inicio,this.fin);
 			 			
 			 this.inicio= this.fin;
 		     this.fin = this.fin + this.rango;
