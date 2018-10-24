@@ -37,8 +37,8 @@ public class WorkerTest {
     public void setUp() throws Exception {
 
         buffer = new Buffer(5);
-        buffer.write(1);
-        buffer.write(1);
+        buffer.write(1d);
+        buffer.write(1d);
         dummyOperacion=mock(Operacion.class);
         operacionMax = mock(Max.class);
         dummyMonitor= mock(MonitorAccionesWorker.class);
@@ -61,10 +61,10 @@ public class WorkerTest {
 
     public void testSum() {
 
-        worker.sum();
+        worker2.sum();
         // Verifica que worker escribió en el buffer 2 veces //
         //verify( mockVector,times(2)).getBuffer().write(d);
-        verify (mockMonitor).contThreads();
+        verify (dummyMonitor).contThreads();
     }
 
     @Test
@@ -80,17 +80,19 @@ public class WorkerTest {
 
     public void testMax() {
         worker2.max();
-        double expected = 4.00;
+        double expected = 1.00;
         //verify (mockMonitor).contThreads();
-        Assert.assertEquals(expected, vector.max());
+        Assert.assertEquals(expected, vector.max(),0.5);
     }
 
     @Test
     public void testAbs() {
-        worker.abs();
+        vector.set(-2,0.00);
+        worker2.abs();
+        int expected = 2;
         // Verifica que worker escribi� en el buffer 2 veces
-        verify( mockVector,times(2)).getBuffer().write(d);
-
+        //verify( vector,times(1)).getBuffer().write(d);
+        Assert.assertEquals(expected, vector.get(0), 0.5);
     }
 
 

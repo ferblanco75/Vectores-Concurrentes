@@ -74,7 +74,9 @@ public class Worker extends Thread {
 			
 		} 
 	    	    
-	    this.vector1.getBuffer().write(result);
+	    this.vector1
+                .getBuffer()
+                .write(result);
 		this.vectorModificado.set (contThreads,(double)this.vector1.getBuffer().read());
 		
   
@@ -102,8 +104,8 @@ public class Worker extends Thread {
  	    	    
  		 		
  	    this.vector1.getBuffer().write(current_max );
- 		
- 		this.vectorModificado.set (contThreads,(double)this.vector1.getBuffer().read());
+
+        this.vectorModificado.set (contThreads, (double) this.vector1.getBuffer().read());
  		
  			   	  	   	  
  	     if (this.contThreads == this.vector1.getThread() -1) {
@@ -143,8 +145,7 @@ public class Worker extends Thread {
 	/** Copia algunos valores de otro vector sobre este vector.
 	 * Un vector mascara indica cuales valores deben copiarse.
 	 * @param mask, vector que determina si una posicion se debe copiar.
-	 * @param v, el vector del que se tomaran los valores nuevos.
-	 * @precondition dimension() == mask.dimension() && dimension() == v.dimension().*/ 
+	 * @precondition dimension() == mask.dimension() && dimension() == v.dimension().*/
 	
 	    public void assignConMask(ConcurVector mask)	 {
 		this.vector2=mask;
