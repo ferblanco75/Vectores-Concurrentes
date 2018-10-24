@@ -77,7 +77,7 @@ public class ConcurVector {
 		elements[i] = d;
 	}
 	
-	/*******************Desde aquí Comienzan la Operaciones concurentes ******************/
+	/*******************Desde aquï¿½ Comienzan la Operaciones concurentes ******************/
 	
 	
 	/** Obtiene el valor absoluto de cada elemento del vector. */
@@ -95,7 +95,7 @@ public class ConcurVector {
 		}
 		
 		else {
-			JOptionPane.showMessageDialog(null, "Número inválido, no se puede realizar la operación Abs");
+			JOptionPane.showMessageDialog(null, "Nï¿½mero invï¿½lido, no se puede realizar la operaciï¿½n Abs");
 			 
 	       } 
 	}
@@ -112,7 +112,7 @@ public class ConcurVector {
 		}
 		
 		else {
-			JOptionPane.showMessageDialog(null, "Número inválido, no se puede realizar la operación Mean");
+			JOptionPane.showMessageDialog(null, "Nï¿½mero invï¿½lido, no se puede realizar la operaciï¿½n Mean");
 			return 0;
 	       } 
 	}
@@ -136,7 +136,7 @@ public class ConcurVector {
 }
 		
 		else {
-			JOptionPane.showMessageDialog(null, "Número inválido, no se puede realizar la operación Prod");
+			JOptionPane.showMessageDialog(null, "Nï¿½mero invï¿½lido, no se puede realizar la operaciï¿½n Prod");
 			return 0;
 	       } 
 	}
@@ -158,7 +158,7 @@ public class ConcurVector {
 }
 		
 		else {
-			JOptionPane.showMessageDialog(null, "Número inválido, no se puede realizar la operación Norm");
+			JOptionPane.showMessageDialog(null, "Nï¿½mero invï¿½lido, no se puede realizar la operaciï¿½n Norm");
 			return 0;
 	       } 
 	}
@@ -180,7 +180,7 @@ public class ConcurVector {
 }
 		
 		else {
-			JOptionPane.showMessageDialog(null, "Número inválido, no se puede realizar la operación Set (d)");
+			JOptionPane.showMessageDialog(null, "Nï¿½mero invï¿½lido, no se puede realizar la operaciï¿½n Set (d)");
 			
 	       } 
 	}
@@ -199,7 +199,7 @@ public class ConcurVector {
 		    
 		}	
 		else {
-			JOptionPane.showMessageDialog(null, "Número inválido, no se puede realizar la operación Assign");
+			JOptionPane.showMessageDialog(null, "Nï¿½mero invï¿½lido, no se puede realizar la operaciï¿½n Assign");
 			 
 	       } 
 	}
@@ -216,7 +216,7 @@ public class ConcurVector {
 		    this.threadPool.initializeWorkers(operacion,this,vector);
 	}	
 		else {
-			JOptionPane.showMessageDialog(null, "Número inválido, no se puede realizar la operación AssignConMask");
+			JOptionPane.showMessageDialog(null, "Nï¿½mero invï¿½lido, no se puede realizar la operaciï¿½n AssignConMask");
 			 
 	       } 
 			
@@ -237,7 +237,7 @@ public class ConcurVector {
 		  }
 		 
 		  else {
-				JOptionPane.showMessageDialog(null, "Número inválido, no se puede realizar la operación Mul");
+				JOptionPane.showMessageDialog(null, "Nï¿½mero invï¿½lido, no se puede realizar la operaciï¿½n Mul");
 				
 		       } 
 			
@@ -258,7 +258,8 @@ public class ConcurVector {
 		 }
 		 
 		  else {
-				JOptionPane.showMessageDialog(null, "Número inválido, no se puede realizar la operación Add");
+
+		  		JOptionPane.showMessageDialog(null, "Nï¿½mero invï¿½lido, no se puede realizar la operaciï¿½n Add");
 				
 		       } 
 		
@@ -301,7 +302,7 @@ public class ConcurVector {
 	   }   
 			 
 			  else {
-					JOptionPane.showMessageDialog(null, "Número inválido, no se puede realizar la operación Sum");
+					JOptionPane.showMessageDialog(null, "Nï¿½mero invï¿½lido, no se puede realizar la operaciï¿½n Sum");
 					return 0;
 			       } 
 		 
@@ -338,7 +339,7 @@ public class ConcurVector {
 		   }   
 			 
 			  else {
-					JOptionPane.showMessageDialog(null, "Número inválido, no se puede realizar la operación Max");
+					JOptionPane.showMessageDialog(null, "Nï¿½mero invï¿½lido, no se puede realizar la operaciï¿½n Max");
 					return 0;
 			       } 
 	   

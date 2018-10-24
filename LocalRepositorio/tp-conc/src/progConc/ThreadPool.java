@@ -18,7 +18,7 @@ public class ThreadPool {
 	
 	
 	/** La clase se encarga de instanciar e iniciar la cantidad de workers correspondientes
-	 * a los valores de los parámetros  threads y load. 
+	 * a los valores de los parï¿½metros  threads y load. 
 	 * @param buffer */
 
 	public ThreadPool() {
@@ -28,12 +28,16 @@ public class ThreadPool {
 		this.monitor= new MonitorAccionesWorker();
 			
 	}
+
+	public int getRango(){
+		return this.rango;
+	}
 	
 		
 	/** Inicializa e innstancia los workers
 	 * @param Operacion, es la operacion que van a realizar los workers
 	 * @param auxVector, es la instancia de la clase que representa el vector que dispara la operacion
-	 * @param auxVectorModificado, es la instancia de la clase que representa el vector que en general fue pasado por parámetro por la operacion
+	 * @param auxVectorModificado, es la instancia de la clase que representa el vector que en general fue pasado por parï¿½metro por la operacion
 	 * @precondition  Ambos vectores tienen la misma dimension
 	 */
 		public void initializeWorkers(Operacion operacion,ConcurVector auxVector,ConcurVector auxVectorModificado) {

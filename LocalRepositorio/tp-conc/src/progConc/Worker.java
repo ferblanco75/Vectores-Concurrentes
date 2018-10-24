@@ -6,7 +6,7 @@ package progConc;
 import javax.swing.JOptionPane;
 
 /**
- @Propósito :  La clase  representa un trhead que hereda de la clase Thread
+ @Propï¿½sito :  La clase  representa un trhead que hereda de la clase Thread
       
  */
 public class Worker extends Thread {
@@ -23,14 +23,13 @@ public class Worker extends Thread {
 	  
     
     /**
-    @Propósito : Constructor del worker 
+    @Propï¿½sito : Constructor del worker 
    	@Param monitor. es una clase monitor que regula el comportamiento del worker
 	@Param operacion. Representa la tarea que a a ser realizada por el worker
-	@Param operacion. Representa la tarea que a a ser realizada por el worker
 	@Param vector y vectorModificado. Son clases que representan vectores sobre los cuales los workers van a operar con sus elementos
-	@Param id. Es un entero positivo que representa el Id único de cada worker al ser inicializado
-	@Param inicio. Es un entero positivo que indica a partir de que posición del vector cada worker va a operar con sus elementos  
-	@Param fin. Es un entero positivo que indica la posición del vector que cada worker debe finalizar su ejecución.  
+	@Param id. Es un entero positivo que representa el Id ï¿½nico de cada worker al ser inicializado
+	@Param inicio. Es un entero positivo que indica a partir de que posiciï¿½n del vector cada worker va a operar con sus elementos  
+	@Param fin. Es un entero positivo que indica la posiciï¿½n del vector que cada worker debe finalizar su ejecuciï¿½n.  
 	*/
     
 	
@@ -128,7 +127,7 @@ public class Worker extends Thread {
 }
 	
 	
-	/** Propósito: Copia los valores de otro vector sobre este vector.*/
+	/** Propï¿½sito: Copia los valores de otro vector sobre este vector.*/
 	 
 	public void assign() {
 		
@@ -158,7 +157,7 @@ public class Worker extends Thread {
 		}
 	
 	}
-	/** Propósito: Multiplica los elementosde un vector con otro uno a uno
+	/** Propï¿½sito: Multiplica los elementosde un vector con otro uno a uno
 	 */ 
 	 
 	public  void mul() {
@@ -178,7 +177,7 @@ public class Worker extends Thread {
 		}
 		}
 
-	/** Propósito: Suma los elementosde un vector con otro uno a uno
+	/** Propï¿½sito: Suma los elementosde un vector con otro uno a uno
 	 */ 
 	 
 		public void add() {
@@ -201,7 +200,7 @@ public class Worker extends Thread {
 		}
 		
 		
-		/** Propósito: Ejecuta la operacion en cuestión, es invocada desde el mensaje start()
+		/** Propï¿½sito: Ejecuta la operacion en cuestiï¿½n, es invocada desde el mensaje start()
 		 * 
 		 */	
 	public void run () {
