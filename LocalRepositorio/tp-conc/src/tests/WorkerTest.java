@@ -7,6 +7,7 @@ import org.junit.Test;
 import progConc.*;
 import org.mockito.Mockito.*;
 
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -18,11 +19,12 @@ import progConc.Worker;
 
 public class WorkerTest {
 
-    private Operacion dummyOperacion;
+    private Operacion mockOperacion;
     private MonitorAccionesWorker dummyMonitor;
     private MonitorAccionesWorker mockMonitor;
-    private ConcurVector mockVector;
-    private ConcurVector vector;
+    private ConcurVector vector1;
+    private ConcurVector vector2;
+    private ConcurVector mask;
     private Worker worker;
     private Worker worker2;
     private Buffer buffer;
@@ -36,18 +38,25 @@ public class WorkerTest {
 
     public void setUp() throws Exception {
 
-        buffer = new Buffer(5);
-        buffer.write(1d);
-        buffer.write(1d);
-        dummyOperacion=mock(Operacion.class);
+        buffer= new Buffer(3);
+        vector1= new ConcurVector (3,2); vector1.setBuffer(buffer);
+        vector2= new ConcurVector (3,2); vector2.setBuffer(buffer);
+        mask= new ConcurVector (3,2); mask.setBuffer(buffer);
+        mockOperacion=mock(Operacion.class);
         operacionMax = mock(Max.class);
         dummyMonitor= mock(MonitorAccionesWorker.class);
-        vector = new ConcurVector(6, 3);
-        vector.setBuffer(buffer);
-        mockVector= mock (ConcurVector.class);
-        mockVector.setBuffer(buffer);
-        worker= new Worker (dummyMonitor,dummyOperacion,mockVector,mockVector,1,0,2);
-        worker2= new Worker (dummyMonitor,operacionMax,vector,mockVector,2,2,4);
+        for (int i=0;i < vector1.dimension();i++ ) { double d= i+1; vector1.set(i,d);
+        }
+        for (int i=0;i < vector2.dimension();i++ ) { vector2.set(i,2);
+        }
+
+        mask.set(0,-1);
+        mask.set(1,-1);
+        mask.set(2,1);
+
+
+        worker= new Worker (dummyMonitor,mockOperacion,vector1,vector2,1,0,3);
+        worker2= new Worker (dummyMonitor,operacionMax,vector1,vector2,2,2,4);
         mockMonitor=mock (MonitorAccionesWorker.class);
 
     }
@@ -61,38 +70,80 @@ public class WorkerTest {
 
     public void testSum() {
 
-        worker2.sum();
-        // Verifica que worker escribió en el buffer 2 veces //
-        //verify( mockVector,times(2)).getBuffer().write(d);
-        verify (dummyMonitor).contThreads();
+        //Suma los elementos del vector1 1 + 2 +3 = 6
+        worker.sum();
+        double expected= 6;
+        assertTrue(vector2.get(0)==expected);
     }
 
-    @Test
 
+    @Test
     public void testRun() {
         worker.run();
-        // Verifica que worker escribió en el buffer 2 veces
-        // verify( mockVector,times(2)).getBuffer().write(d);
-         verify (dummyOperacion, atLeast(1)).operar(worker);
-        }
+        // Verifica que operación ejecutó el método operar
+
+        verify (mockOperacion, atLeast(1)).operar(worker);
+    }
 
     @Test
+    public void testAssign() {
 
-    public void testMax() {
-        worker2.max();
-        double expected = 1.00;
-        //verify (mockMonitor).contThreads();
-        Assert.assertEquals(expected, vector.max(),0.5);
+        // El vector2 tiene en todos sus elementos el valor 2, y son asignados al vector1
+        double expected=2;
+        worker.assign();
+        assertTrue(vector1.get(0)==expected);
+        assertTrue(vector1.get(1)==expected);
+        assertTrue(vector1.get(2)==expected);
     }
+
 
     @Test
     public void testAbs() {
-        vector.set(-2,0.00);
-        worker2.abs();
-        int expected = 2;
-        // Verifica que worker escribi� en el buffer 2 veces
-        //verify( vector,times(1)).getBuffer().write(d);
-        Assert.assertEquals(expected, vector.get(0), 0.5);
+        double expected=1;
+        vector1.set(0,-1);
+        vector1.set(1,-1);
+        vector1.set(2,-1);
+        // Al hace el valor absoluto del vector1 con sus valores a -1 los pasa todos a  1
+        worker.abs();
+        assertTrue(vector1.get(0)==1);
+        assertTrue(vector1.get(1)==1);
+        assertTrue(vector1.get(2)==1);
+
+    }
+
+    @Test
+    public void testAssignConMask() {
+        // En el vector mask la última posición tiene un valor positivo, por tanto
+        // es la única posición que se sobreescribe en Vector1 con el valor 2 del vector2
+
+        worker.assignConMask(mask);
+        assertTrue(vector1.get(0)==1);
+        assertTrue(vector1.get(1)==2);
+        assertTrue(vector1.get(2)==2);
+    }
+
+    @Test public void testMul() {
+        // Multiplica los valores del vector1 (1,2,3) con los valores del vector2 uno a uno (2,2,,2)
+        // y el resultado es Vector1 con (2,4,6)
+        worker.mul();
+        assertTrue(vector1.get(0)==2);
+        assertTrue(vector1.get(1)==4);
+        assertTrue(vector1.get(2)==6);
+    }
+    @Test public void testAdd() {
+        // Suma los valores del vector1 (1,2,3) con los valores del vector2 uno a uno (2,2,,2)
+        // y el resultado es Vector1 con (3,4,5)
+         worker.add();
+         assertTrue(vector1.get(0)==3);
+         assertTrue(vector1.get(1)==4);
+         assertTrue(vector1.get(2)==5);
+    }
+    @Test public void testSet() {
+        // Pone todos los elementos del vector1 con el valor pasado por parámetro en set, en este caso es 3 worker.set(3);
+         double expected= 3;
+         assertTrue(vector1.get(0)==expected);
+         assertTrue(vector1.get(1)==expected);
+         assertTrue(vector1.get(2)==expected);
     }
 
 
