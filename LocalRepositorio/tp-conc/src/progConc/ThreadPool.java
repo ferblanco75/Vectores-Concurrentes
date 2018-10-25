@@ -29,9 +29,7 @@ public class ThreadPool {
 			
 	}
 
-	public int getRango(){
-		return this.rango;
-	}
+
 	
 		
 	/** Inicializa e innstancia los workers
@@ -85,12 +83,20 @@ public class ThreadPool {
 					e.printStackTrace();
 				}
 		      }
-			
+
+
 			}
-			
-				
-		
-		}	
+		public int getFin() {
+		return this.fin;
+		}
+
+		public int getRango() {
+		return this.rango;
+		}
+
+
+
+}
 			
  
 	

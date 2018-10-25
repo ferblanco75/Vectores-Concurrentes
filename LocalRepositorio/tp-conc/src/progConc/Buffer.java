@@ -1,8 +1,8 @@
 package progConc;
 
 /**
-@Propósito : Es una clase que funicona como un monitor, cuyos métodos
- synchronized se ejecutan en exclusión mutua. y Simula un buffer circular
+@Propï¿½sito : Es una clase que funicona como un monitor, cuyos mï¿½todos
+ synchronized se ejecutan en exclusiï¿½n mutua. y Simula un buffer circular
  de longitud fija de punto flotante.
 */
 
@@ -11,9 +11,9 @@ public class Buffer {
 		private int begin = 0, end = 0;
 	
 		/**
-		@Propósito : Constructor del Buffer
+		@Propï¿½sito : Constructor del Buffer
 		@precondition n Debe ser un entero positivo.
-		@Param n. Es un entero positivo, que indica la dimensión del Buffer
+		@Param n. Es un entero positivo, que indica la dimensiï¿½n del Buffer
 		*/
 		
 		public Buffer(int n) {
@@ -23,20 +23,20 @@ public class Buffer {
 		
 		
 		/**
-		@Propósito : Devuelve un array de elementos Object
+		@Propï¿½sito : Devuelve un array de elementos Object
 		@precondition Ninguna.
-		@Param Object[] El array de elementos Object que será devuelto.
+		@Param Object[] El array de elementos Object que serï¿½ devuelto.
 		*/
 		public Object[] getData() {
 			return this.data;
 		}
 		
 		/**
-		@Propósito : Escribe un dato en el Buffer, mientras éste no esté lleno,y notifica 
+		@Propï¿½sito : Escribe un dato en el Buffer, mientras ï¿½ste no estï¿½ lleno,y notifica 
 		a los procesos de la cola que ya hay un nuevo dato. 
 		caso contrario, el proceso se va a dormir hasta que otro proceso lo despierte.
 		@precondition Ninguna.
-		@Param Object, es el tipo de dato genérico a ser escrito en el buffer. 
+		@Param Object, es el tipo de dato genï¿½rico a ser escrito en el buffer. 
 		*/
 		public synchronized void write ( Object o) {
 		while ( isFull ())
@@ -52,11 +52,11 @@ public class Buffer {
 		}
 		
 		/**
-		@Propósito :Devuelve un dato leído del Buffer, mientras éste no esté vacio,y notifica 
+		@Propï¿½sito :Devuelve un dato leï¿½do del Buffer, mientras ï¿½ste no estï¿½ vacio,y notifica 
 		a los procesos de la cola que hay espacio disponible en el buffer. 
 		caso contrario, el proceso se va a dormir hasta que otro proceso lo despierte.
 		@precondition Ninguna.
-		@Param Object, es el tipo de dato genérico a ser devuelto al leer del buffer. 
+		@Param Object, es el tipo de dato genï¿½rico a ser devuelto al leer del buffer. 
 		*/
 		public synchronized Object read () {
 		while ( isEmpty ())
@@ -73,24 +73,24 @@ public class Buffer {
 		}
 		
 		/**
-		@Propósito :Devuelve true en caso que el buffer esté vacío.
+		@Propï¿½sito :Devuelve true en caso que el buffer estï¿½ vacï¿½o.
 		@precondition Begin y end.Deben ser enteros positivos.
-		@Param begin, es un entero positivo que indica en que posición se va a escribir el buffer 
-		@Param begin, es un entero positivo que indica en que posición se va a leer del buffer 
+		@Param begin, es un entero positivo que indica en que posiciï¿½n se va a escribir el buffer 
+		@Param begin, es un entero positivo que indica en que posiciï¿½n se va a leer del buffer 
 		*/
 		public boolean isEmpty () { return begin == end; }
 		
 		/**
-		@Propósito :Devuelve true en caso que el buffer esté lleno.
+		@Propï¿½sito :Devuelve true en caso que el buffer estï¿½ lleno.
 		@precondition Begin y end.Deben ser enteros positivos.
-		@Param begin, es un entero positivo que indica en que posición se va a escribir el buffer 
-		@Param begin, es un entero positivo que indica en que posición se va a leer del buffer 
+		@Param begin, es un entero positivo que indica en que posiciï¿½n se va a escribir el buffer 
+		@Param begin, es un entero positivo que indica en que posiciï¿½n se va a leer del buffer 
 		*/
 		public boolean isFull () { return next ( begin ) == end ; }
 		
 		/**
-		@Propósito :Devuelve la próxima posición del buffer.
-		@precondition i , nunca puede tomar un valor negativo, ni superar el tamaño del buffer. 
+		@Propï¿½sito :Devuelve la prï¿½xima posiciï¿½n del buffer.
+		@precondition i , nunca puede tomar un valor negativo, ni superar el tamaï¿½o del buffer. 
 		@Param i , es un entero positivo. 
 		 
 		*/
