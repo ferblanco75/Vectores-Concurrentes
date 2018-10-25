@@ -129,14 +129,14 @@ public class ConcurVectorTest {
 	}
 	
 	@Test /*test para Norm*/
-    public void test_AlPedirLaNormaDelVector1__ElResultadoEs_7() {
+    public void test_AlPedirLaNormaDelVector1__ElResutadoEsRaizCuadradaDe140() {
 		double expected= Math.sqrt(140);
    	    double norma= vector1.norm();
 		assertTrue(norma== expected);
 	}
 	
 	@Test /*test para Mean*/
-    public void test_AlPedirElPromedioDeLVector1_ElResultadoEs_7() {
+    public void test_AlPedirElPromedioDeLVector1_ElResultadoEs_4() {
 		double expected= 4;
    	    double promedio= vector1.mean();
 		assertTrue(promedio== expected);
