@@ -4,7 +4,6 @@ import org.junit.Before;
 import progConc.*;
 //package tests;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -20,6 +19,7 @@ import static org.mockito.Mockito.*;
 
     public class ThreadPoolTest {
 
+        Buffer buffer;
         ThreadPool threadPool;
         //Worker mockWorker;
         Operacion dummyOperacion;
@@ -34,9 +34,10 @@ import static org.mockito.Mockito.*;
 
         @Before
         public void setUp() throws Exception {
+            buffer= new Buffer(3);
             dummyOperacion = mock(Operacion.class);
-            //	Operacion operacion= new Abs();
-            vector1 = new ConcurVector(7, 3);
+            operacion= new Abs();
+            vector1 = new ConcurVector(7, 3);vector1.setBuffer(buffer);
             dummyVector = mock(ConcurVector.class);
             mockWorker = mock(Worker.class);
             threadPool = new ThreadPool();
@@ -54,8 +55,8 @@ import static org.mockito.Mockito.*;
 
             threadPool.initializeWorkers(operacion, vector1, dummyVector);
             // Verifica que se instanciaron 3 Threads workers
-            //verify(dummyOperacion, times(0)).operar(mockWorker);
-            verify(mockWorker, atLeast(1)).start();
+            verify(mockWorker, times(5)).join();
+
         }
 
     }
