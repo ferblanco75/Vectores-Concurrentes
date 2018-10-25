@@ -140,6 +140,7 @@ public class WorkerTest {
     }
     @Test public void testSet() {
         // Pone todos los elementos del vector1 con el valor pasado por parámetro en set, en este caso es 3 worker.set(3);
+         worker.set(3);
          double expected= 3;
          assertTrue(vector1.get(0)==expected);
          assertTrue(vector1.get(1)==expected);
