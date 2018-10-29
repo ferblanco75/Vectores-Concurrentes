@@ -18,11 +18,11 @@ import static org.mockito.Mockito.*;
 public class ThreadPoolTest {
      
 	ThreadPool threadPool;
-	//Worker mockWorker; 
+	
 	Operacion dummyOperacion;
-	Operacion operacion;
+	
     ConcurVector vector1, dummyVector;
-    Worker mockWorker;
+  
     
 	
 	@BeforeClass
@@ -32,11 +32,9 @@ public class ThreadPoolTest {
 	@Before
 	public void setUp() throws Exception {
 		 dummyOperacion =  mock(Operacion.class);
-	//	Operacion operacion= new Abs();
 		vector1= new ConcurVector(7,3);
 		dummyVector= mock (ConcurVector.class);
-		mockWorker = mock (Worker.class) ; 
-	    threadPool= new ThreadPool();
+		 threadPool= new ThreadPool();
 	   
 	}
 
@@ -49,10 +47,11 @@ public class ThreadPoolTest {
 	@Test
 	public void testInitializeWorkers() throws InterruptedException {
 		
-		threadPool.initializeWorkers(operacion,vector1,dummyVector);
-		// Verifica que se instanciaron 3 Threads workers
-		//verify(dummyOperacion, times(0)).operar(mockWorker);
-		verify(mockWorker, atLeast(1)).start();
+		threadPool.initializeWorkers(dummyOperacion,vector1,dummyVector);
+		int expoected= 7;
+		// El último thread va hasta el fin que es la dimension del vector
+		assertTrue(threadPool.getFin()-threadPool.getRango() == 7);
+		
 	}
 
 }

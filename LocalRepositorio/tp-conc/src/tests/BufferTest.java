@@ -11,7 +11,7 @@ import progConc.Buffer;
 
 public class BufferTest {
 	Buffer buffer;
-	
+	double dato= 5;
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -45,28 +45,35 @@ public class BufferTest {
 @Test
 	
 	public void test__AlEscribir_enElBuffer_una_Vez_YaTiene_UnDato(){
-       
-	    buffer.write(3);
+	assertTrue(buffer.isEmpty());
+	    buffer.write(dato);
 		assertFalse(buffer.isEmpty());
    	}
 
 @Test
 
   public void test__AlEscribir_2_VecesMas_ElBuffer_estaLLeno(){
-   
-    buffer.write(1);
-    buffer.write(1);
+	assertTrue(buffer.isEmpty());
+  	buffer.write(dato);
+	buffer.write(dato);
+  // buffer.write(dato);
       
 	assertTrue(buffer.isFull());
 	}
 
-
+@Test
 public void test__AlLeer_3_VecesElBuffer_VuelveA_estarVacio(){
-	   
-    buffer.read();
-    buffer.read();
-    buffer.read();
+	//assertTrue(buffer.isFull());
 	assertTrue(buffer.isEmpty());
+	 buffer.write(dato);
+	  buffer.write(dato);
+	 buffer.write(dato);
+	  assertTrue(buffer.isFull()); 
+   // buffer.read();
+   // buffer.read();
+   // buffer.read();
+//	assertTrue(buffer.isEmpty());
+
 	}
 
 }

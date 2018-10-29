@@ -64,6 +64,8 @@ public class Principal {
 				int d= i+1;
 				vector4.set(i,d);		
 				}
+			
+					
 		
 			for (int i=0;i < vector1.dimension();i++ ) {
 				System.out.println (vector1.get(i));	
@@ -71,23 +73,25 @@ public class Principal {
 			System.out.println ("//");
 			
 			
+				
+			
 			for (int i=0;i < vector2.dimension();i++ ) {
 				System.out.println (vector2.get(i));		
 				}	
-			System.out.println ("//");
+			   System.out.println ("//");
 			
 			 
 			   vector1.mul(vector2);
-			   
 			 
+			
 			  for (int i=0;i < vector1.dimension();i++ ) {
 					System.out.println (vector1.get(i));		
 					}
 			  System.out.println ("//");
 			 
-			
-	  
 			  
+			
+	  			  
 			  vector1.add(vector2);
 			  
 			  for (int i=0;i < vector1.dimension();i++ ) {
@@ -112,14 +116,14 @@ public class Principal {
 				  System.out.println ("//");
 				 
 				
-				  double suma=vector4.sum();
+				 double suma=vector4.sum();
 				   
 				   for (int i=0;i < vector4.dimension();i++ ) {
 				   System.out.println ("[" + i + "] : = "+vector4.get(i) ); 
 				   
 				   }
 				   System.out.println ("El resultado de la suma de los elementos es: " + suma ); 
-				   
+				  
 				 
 				 			 
 				

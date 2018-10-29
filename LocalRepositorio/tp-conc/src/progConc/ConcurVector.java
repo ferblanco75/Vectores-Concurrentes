@@ -10,11 +10,14 @@ public class ConcurVector {
 
 	private static int load= 2;
 	private int dimension, threads;
+	private MonitorAccionesConcurVector monitorVector= new MonitorAccionesConcurVector();
 	
 	// El array con los elementos del vector
 	private double [] elements;
 	private ThreadPool threadPool;
 	private Buffer buffer;
+	
+	
 		
 	/** Constructor del ConcurVector.
 	 * @param dimension, la longitud del vector.
@@ -28,7 +31,7 @@ public class ConcurVector {
 		
 	}			
 		
-			
+
 	public int load() {
 		return this.load;
 	}
@@ -79,8 +82,9 @@ public class ConcurVector {
 	
 	/*******************Desde aquí Comienzan la Operaciones concurentes ******************/
 	
-	
-	/** Obtiene el valor absoluto de cada elemento del vector. */
+	 
+
+	 /** Obtiene el valor absoluto de cada elemento del vector. */
 	public synchronized void abs() {
 		
 		if ( ! (this.dimension()<=0 || this.getThread()<=0 || this.dimension()< this.getThread())){

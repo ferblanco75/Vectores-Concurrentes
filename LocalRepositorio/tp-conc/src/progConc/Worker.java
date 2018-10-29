@@ -20,7 +20,10 @@ public class Worker extends Thread {
 	private int fin;
 	private Operacion operacion;
 	private MonitorAccionesWorker monitor;
-	  
+	private MonitorBarrera barrera;
+	private MonitorAccionesConcurVector monitorVector= new MonitorAccionesConcurVector(); 
+    private ThreadPool threadPool; 
+	private MonitorSecuenciador secuenciador;
     
     /**
     @Propósito : Constructor del worker 
@@ -34,10 +37,12 @@ public class Worker extends Thread {
 	*/
     
 	
-	public Worker (MonitorAccionesWorker monitor,Operacion operacion,ConcurVector vector1,ConcurVector vectorModificado, int id, int inicio, int fin ) {
+	public Worker (MonitorSecuenciador secuenciador,MonitorBarrera barrera,MonitorAccionesWorker monitor,Operacion operacion,ConcurVector vector1,ConcurVector vectorModificado, int id, int inicio, int fin ) {
 	
 	
-	this.monitor= monitor;
+	this.secuenciador= secuenciador;
+	this.barrera= barrera;
+  	this.monitor= monitor;
 	this.operacion= operacion;
 	this.vector1= vector1;
 	this.vectorModificado= vectorModificado;
@@ -45,9 +50,14 @@ public class Worker extends Thread {
 	this.inicio= inicio;
 	this.fin= fin;
 	
+	this.threadPool= threadPool;
 
 	}
 
+	public int id() {
+		return this.id;
+	}
+	
 		
 	
 	/** Obtiene el valor absoluto de cada elemento del vector.*/ 
@@ -55,6 +65,7 @@ public class Worker extends Thread {
 		
 		for (int i= this.inicio; i < this.fin; i++) {
 						
+					
 			this.vector1.getBuffer().write(Math.abs(this.vector1.get(i)));
 			this.vector1.set(i, (double)vector1.getBuffer().read());	
 		}
@@ -162,22 +173,31 @@ public class Worker extends Thread {
 	 */ 
 	 
 	public  void mul() {
+		       
+System.out.println("Soy el Worker: "+ id +" y voy desde: " + this.inicio+ "hasta: "+ this.fin  );
 		
 		double result1 = 0;
 		double result2= 0;
-		
+			
 		for (int i= this.inicio; i < this.fin; i++) {
 			
 			result1 = (double)this.vector1.get(i);
 			result2= (double)this.vectorModificado.get(i);
 			
+						
+		//	this.vector1.set(i,result1*result2);
 			this.vector1.getBuffer().write(result1 * result2);
 			
 			this.vector1.set(i,(double)this.vector1.getBuffer().read() );
-						
-		}
-		}
 
+			System.out.println("resultado = "+ vector1.get(i) );
+			
+		}
+	}
+	
+	
+	
+	
 	/** Propósito: Suma los elementosde un vector con otro uno a uno
 	 */ 
 	 
@@ -204,12 +224,11 @@ public class Worker extends Thread {
 		/** Propósito: Ejecuta la operacion en cuestión, es invocada desde el mensaje start()
 		 * 
 		 */	
-	public void run () {
-				
-		this.operacion.operar(this);
-	
+	/*public void run () {
 		
-	}
+
+
+	}	*/
 		
 
 

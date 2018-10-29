@@ -14,10 +14,10 @@ public class Mul extends Operacion {
 	   @precondition Ninguna
 	   @Param.worker, es el thread que realiza la operación mul().  
 	 */
-	     public void operar(Worker worker) {
+	     public void operar(Worker worker ) {
 		
     	   worker.mul();	
-
+    	   
 }
 	      
 }
