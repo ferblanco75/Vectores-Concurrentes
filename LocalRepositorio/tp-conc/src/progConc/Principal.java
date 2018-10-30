@@ -18,34 +18,34 @@ public class Principal {
 	
 	public static void main(String[] args) throws InterruptedException {
 		
-		Buffer  buffer3= new Buffer (3);
-		Buffer  buffer4= new Buffer (4);
-		Buffer  buffer2= new Buffer (2);
+	//	Buffer  buffer3= new Buffer (3);
+ //		Buffer  buffer4= new Buffer (4);
+	//	Buffer  buffer2= new Buffer (2);
 				
 		ConcurVector vector1= new ConcurVector(7,3);
-		vector1.setBuffer(buffer3);
+		//vector1.setBuffer(buffer3);
 		
 		ConcurVector vector2= new ConcurVector(7,3);
-		vector2.setBuffer(buffer4);
+		//vector2.setBuffer(buffer4);
 		
 		ConcurVector vector3= new ConcurVector(7,3);
 		
-		vector3.setBuffer(buffer2);
+		//vector3.setBuffer(buffer2);
 	
 		ConcurVector vector4= new ConcurVector(4,2);
-		vector4.setBuffer(buffer3);
+	//	vector4.setBuffer(buffer3);
 	    
 		ConcurVector mask= new ConcurVector(7,3);
-	  		mask.setBuffer(buffer2);
+	  //		mask.setBuffer(buffer2);
 		 
 	  		ConcurVector v= new ConcurVector(7,3);
-		     v.setBuffer(buffer4);
+		//     v.setBuffer(buffer4);
 		 
 		     ConcurVector vector5= new ConcurVector(7,3);
-		 vector5.setBuffer(buffer3);
+		// vector5.setBuffer(buffer3);
 		 
 		 ConcurVector vector6= new ConcurVector(7,3);
-		 vector6.setBuffer(buffer4);
+		 //vector6.setBuffer(buffer4);
 		 
 			for (int i=0;i < vector1.dimension();i++ ) {
 			int d= i+1;
@@ -80,8 +80,10 @@ public class Principal {
 				}	
 			   System.out.println ("//");
 			
+			   
+			   vector1.mul2(vector2);
 			 
-			   vector1.mul(vector2);
+			  // vector1.mul(vector2);
 			 
 			
 			  for (int i=0;i < vector1.dimension();i++ ) {
@@ -90,7 +92,7 @@ public class Principal {
 			  System.out.println ("//");
 			 
 			  
-			
+		/**
 	  			  
 			  vector1.add(vector2);
 			  
@@ -208,7 +210,7 @@ public class Principal {
 								  System.out.println ("El promedio de vector es:= " + promedio);
 								  System.out.println ("//"); 
 	   
-		}
+		*/}
 		
 		
 	}

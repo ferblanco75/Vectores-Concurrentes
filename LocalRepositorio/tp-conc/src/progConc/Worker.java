@@ -21,9 +21,11 @@ public class Worker extends Thread {
 	private Operacion operacion;
 	private MonitorAccionesWorker monitor;
 	private MonitorBarrera barrera;
-	private MonitorAccionesConcurVector monitorVector= new MonitorAccionesConcurVector(); 
+	
     private ThreadPool threadPool; 
 	private MonitorSecuenciador secuenciador;
+	
+	private Buffer buffer;
     
     /**
     @Propósito : Constructor del worker 
@@ -37,27 +39,48 @@ public class Worker extends Thread {
 	*/
     
 	
-	public Worker (MonitorSecuenciador secuenciador,MonitorBarrera barrera,MonitorAccionesWorker monitor,Operacion operacion,ConcurVector vector1,ConcurVector vectorModificado, int id, int inicio, int fin ) {
+	public Worker (Buffer bufffer,MonitorSecuenciador secuenciador,MonitorBarrera barrera,Operacion operacion, int id ) {
 	
-	
+	this.buffer= buffer;
 	this.secuenciador= secuenciador;
 	this.barrera= barrera;
-  	this.monitor= monitor;
+  	//this.monitor= monitor;
 	this.operacion= operacion;
-	this.vector1= vector1;
-	this.vectorModificado= vectorModificado;
+	//this.vector1= vector1;
+	//this.vectorModificado= vectorModificado;
 	this.id= id;
-	this.inicio= inicio;
-	this.fin= fin;
+	//this.inicio= inicio;
+	//this.fin= fin;
 	
-	this.threadPool= threadPool;
+	//this.threadPool= threadPool;
 
 	}
 
 	public int id() {
 		return this.id;
 	}
-	
+	public  void mul2() {
+		Work work = (Work) this.buffer.read();  
+		System.out.println("Soy el Worker: "+ id +" y voy desde: " + work.getInicio()+ "hasta: "+ work.getInicio()  );
+				
+			 
+		
+				double result1 = 0;
+				double result2= 0;
+					
+				for (int i= work.getInicio(); i < work.getFin(); i++) {
+					
+					result1 = (double)work.getVector1().get(i);
+					result2= (double)work.getVectorModificado().get(i);
+					
+								
+					work.getVector1().set(i,result1*result2);
+					
+
+					System.out.println("resultado = "+ work.getVector1().get(i) );
+					
+				}
+			}
 		
 	
 	/** Obtiene el valor absoluto de cada elemento del vector.*/ 
@@ -228,9 +251,9 @@ System.out.println("Soy el Worker: "+ id +" y voy desde: " + this.inicio+ "hasta
 		
 
 
-	}	*/
+	}	
 		
-
+*/
 
 }
 

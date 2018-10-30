@@ -21,13 +21,13 @@ public class ConcurVectorTest {
 
 	@Before
 	public void setUp() throws Exception {
-		 buffer= new Buffer(3);
+		// buffer= new Buffer(3);
 		 vector1= new ConcurVector(7,3);
-		 vector1.setBuffer(buffer);
+		// vector1.setBuffer(buffer);
 		 vector2= new ConcurVector(7,3);
-		 vector2.setBuffer(buffer);
+		// vector2.setBuffer(buffer);
 		 mask= new ConcurVector(7,3);
-		 mask.setBuffer(buffer);
+		 //mask.setBuffer(buffer);
 		
 		 for (int i=0;i < vector1.dimension();i++ ) {
 				int d= i+1;
@@ -70,6 +70,18 @@ public class ConcurVectorTest {
 		
 		assertTrue(vector2.get(2)==2);
 	}
+	
+	
+	@Test //test para mul
+    public void test_Al_MultiplicarLosElementosDeAmbosVectores_LaPosicion_2_DelVector1_TieneAhora_elNumero_Seis() {
+		
+		//Antes de mul() el vector1 tiene en la posicion 2 el numero 3 
+		assertTrue(vector1.get(2)== 3);
+   	 vector1.mul2(vector2);
+   	//Despues de mul() el vector1 tiene en la posicion 2 el numero 6 
+   	 assertTrue(vector1.get(2)==6);
+	}
+	/**
 	
 	@Test //test para mul
      public void test_Al_MultiplicarLosElementosDeAmbosVectores_LaPosicion_2_DelVector1_TieneAhora_elNumero_Seis() {
@@ -176,5 +188,5 @@ public class ConcurVectorTest {
 		//Antes de AsssignConMask() el vector1 tiene en la posicion 6 el numero 5 
 		  assertTrue(vector1.get(6)==5);
 	}
-	 
+	 */
 }

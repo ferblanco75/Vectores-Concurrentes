@@ -41,17 +41,17 @@ public class WorkerTest {
 		mockBarrera= mock(MonitorBarrera.class); 
 		mockSecuenciador= mock(MonitorSecuenciador.class); 
 				
-		buffer= new Buffer(3);
+	//	buffer= new Buffer(3);
 		
 		vector1= new ConcurVector (3,2);
-		vector1.setBuffer(buffer);
+	//	vector1.setBuffer(buffer);
 		
 		vector2= new ConcurVector (3,2);
-		vector2.setBuffer(buffer);
+	//	vector2.setBuffer(buffer);
 		
 		
         mask= new ConcurVector (3,2);
-		mask.setBuffer(buffer);
+	//	mask.setBuffer(buffer);
 		
 		for (int i=0;i < vector1.dimension();i++ ) {
 			double d= i+1;
@@ -68,7 +68,7 @@ public class WorkerTest {
 				mask.set(2,1);	
 				
 		
-		worker= new Worker (mockSecuenciador,mockBarrera,dummyMonitor,mockOperacion,vector1,vector2,1,0,3);
+		worker= new Worker (vector1.getBuffer(),mockSecuenciador,mockBarrera,mockOperacion,1);
 	
 		
 	}
@@ -77,7 +77,18 @@ public class WorkerTest {
 	public void tearDown() throws Exception {
 	}
 
-		
+	
+	@Test
+	public void testMul() {
+		// Multiplica los valores del vector1 (1,2,3) con los valores del vector2 uno a uno (2,2,,2)
+		// y el resultado es Vector1 con (2,4,6)
+		worker.mul();
+		assertTrue(vector1.get(0)==2);
+		assertTrue(vector1.get(1)==4);
+		assertTrue(vector1.get(2)==6);
+		 
+	}
+	/**	
 	@Test
 	public void testAssign() {
 		
@@ -167,6 +178,6 @@ public class WorkerTest {
 		 
 	}
 	
-	
+	*/
 	
 }

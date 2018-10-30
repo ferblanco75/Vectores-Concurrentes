@@ -2,6 +2,9 @@
  * 
  */
 package progConc;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.swing.JOptionPane;
 
 public class ConcurVector {
@@ -10,13 +13,16 @@ public class ConcurVector {
 
 	private static int load= 2;
 	private int dimension, threads;
-	private MonitorAccionesConcurVector monitorVector= new MonitorAccionesConcurVector();
+	private Work work;
+	private List <Work> works= new ArrayList <Work>();
+	private int inicio, fin;
+	private int rango, resto;
 	
 	// El array con los elementos del vector
 	private double [] elements;
 	private ThreadPool threadPool;
 	private Buffer buffer;
-	
+	private MonitorBarrera barrera;
 	
 		
 	/** Constructor del ConcurVector.
@@ -26,21 +32,23 @@ public class ConcurVector {
 		
 	     	this.dimension= dimension;
 			this.elements= new  double[dimension];
-			this.threadPool=  new ThreadPool ();
+			
 			this.threads= threads;
-		
+			this.buffer= new Buffer(threads);
+			this.threadPool=  new ThreadPool (threads,buffer);
+			this.barrera= new MonitorBarrera(threads);
 	}			
 		
 
 	public int load() {
 		return this.load;
 	}
-	
+	/*
 	// Se configura el Buffer
 	public void setBuffer(Buffer buffer) {
 		this.buffer= buffer;
 		}
-	
+	*/
 	// Devuelve un  Buffer
 	public Buffer getBuffer(){
 	   return this.buffer;
@@ -82,9 +90,84 @@ public class ConcurVector {
 	
 	/*******************Desde aquí Comienzan la Operaciones concurentes ******************/
 	
-	 
+	
+	 public synchronized void mul2(ConcurVector vector) {
+	
+		 if ( ! (this.dimension()<=0 || this.getThread()<=0 || this.dimension()< this.getThread())){
+				
+				
+				
+		 Operacion operacion= new Mul2();
+		 
+		 List <Work> works = this.getTrabajoConCargaDistribuida(vector);
+		 
+		 for (Work work: this.works) {
+				System.out.println("el work" + "va desde: " + work.getInicio()+ "  hasta: "+ work.getFin() ); 
+			}
+		 System.out.println("//" ); 
+		 
+		 System.out.println("El tamaño del buffer es :" + this.buffer.getData().length ); 
+		 
+		 for (Work work : works) {
 
-	 /** Obtiene el valor absoluto de cada elemento del vector. */
+	       this.buffer.write(work);
+	     
+		 }
+		
+		// Work [] data= (Work[]) this.buffer.getData();
+		 System.out.println("El tamaño del buffer es :" + this.buffer.getData().length );
+		// System.out.println("el work  " + "va desde: " +data[0].getInicio()+ "  hasta: "+ data[0].getFin()); 
+		    
+		 
+		/*  for (int i= 0; i < this.threads; i++) {
+				Work work= (Work) this.buffer.read();
+			 System.out.println("el work" + "va desde: " + work.getInicio()+ "  hasta: "+ work.getFin() ); 
+			}
+		 */
+		 //this.threadPool.initializeWorkers(operacion,this,vector);
+		 this.threadPool.initializeWorkers(operacion);
+		// this.barrera.esperar(operacion, worker);
+	 }
+	  
+		 else {
+				JOptionPane.showMessageDialog(null, "Número inválido, no se puede realizar la operación Set (d)");
+				
+		       } 
+		 
+	 }
+	 
+	 public List <Work> getTrabajoConCargaDistribuida(ConcurVector vector) {
+	 
+		this.rango= (this.dimension / this.threads);
+		this.resto= (this.dimension % this.threads); 
+		 
+	    this.inicio= 0;
+		this.fin = this.rango;
+		
+		for (int i= 0; i < this.threads; i++) {
+		
+		if ( i >= (this.threads - this.resto)) {
+			this.fin ++;
+		}
+		
+		 this.work= new Work (this,vector,this.inicio,this.fin);
+		 
+		 this.works.add(this.work);
+		 
+				 
+		 this.inicio= this.fin;
+	     this.fin = this.fin + this.rango;
+	     
+		}
+		
+		
+		
+		return this.works;
+	 	
+	 
+}
+	 
+	 /** Obtiene el valor absoluto de cada elemento del vector. 
 	public synchronized void abs() {
 		
 		if ( ! (this.dimension()<=0 || this.getThread()<=0 || this.dimension()< this.getThread())){
@@ -105,7 +188,7 @@ public class ConcurVector {
 	}
 
 		
-	 /** Obtiene el valor promedio en el vector. */
+	 /** Obtiene el valor promedio en el vector. 
 	
 	public synchronized double mean() {
 		if ( ! (this.dimension()<=0 || this.getThread()<=0 || this.dimension()< this.getThread())){
@@ -127,7 +210,7 @@ public class ConcurVector {
      * El producto vectorial consiste en la suma de los productos
      * de cada coordenada.
 	 * @param v, el vector a usar para realizar el producto.
-	 * @precondition dimension() == v.dimension(). */
+	 * @precondition dimension() == v.dimension(). 
 	public synchronized double prod(ConcurVector v) {
 		if ( ! (this.dimension()<=0 || this.getThread()<=0 || this.dimension()< this.getThread())){
 		
@@ -149,7 +232,7 @@ public class ConcurVector {
 	/** Retorna la norma del vector.
      *  Recordar que la norma se calcula haciendo la raiz cuadrada de la
      *  suma de los cuadrados de sus coordenadas.
-     */
+    
 	public synchronized double norm() {
 		if ( ! (this.dimension()<=0 || this.getThread()<=0 || this.dimension()< this.getThread())){
 		
@@ -170,7 +253,7 @@ public class ConcurVector {
 	
 		
 	/** Pone el valor d en todas las posiciones del vector. 
-	 * @param d, el valor a ser asignado. */
+	 * @param d, el valor a ser asignado. 
 	
 	public synchronized void set(double d) {
 		if ( ! (this.dimension()<=0 || this.getThread()<=0 || this.dimension()< this.getThread())){
@@ -192,7 +275,7 @@ public class ConcurVector {
 	
 	/** Copia los valores de otro vector sobre este vector.
 	 * @param v, el vector del que se tomaran los valores nuevos.
-	 * @precondition dimension() == v.dimension(). */
+	 * @precondition dimension() == v.dimension(). 
 	public synchronized void assign(ConcurVector vector) {
 		if ( ! ((this.dimension()<=0 || this.getThread()<=0 || this.dimension()< this.getThread())
 				|| (vector.dimension()<=0 || vector.getThread()<=0 || vector.dimension()< vector.getThread()) ) ) {
@@ -229,7 +312,7 @@ public class ConcurVector {
 	/** Multiplica los valores de este vector con los de otro
      *  (uno a uno).
 	 * @param v, el vector con los valores a multiplicar.
-	 * @precondition dimension() == v.dimension(). */
+	 * @precondition dimension() == v.dimension(). 
 	  public synchronized void mul(ConcurVector vector) {
 		  if ( ! ((this.dimension()<=0 || this.getThread()<=0 || this.dimension()< this.getThread())
 					|| (vector.dimension()<=0 || vector.getThread()<=0 || vector.dimension()< vector.getThread())) ) {
@@ -257,7 +340,7 @@ public class ConcurVector {
 		
 		 Operacion operacion= new Add();
 			
-		this.threadPool.initializeWorkers(operacion,this,vector);
+		this.threadPool.initializeWorkers(operacion);
 		
 		 }
 		 
@@ -269,7 +352,7 @@ public class ConcurVector {
 	}
 	
 		
-	/** Obtiene la suma de todos los valores del vector. */
+	/** Obtiene la suma de todos los valores del vector. 
 	   public synchronized double sum() {
 		   if ( ! (this.dimension()<=0 || this.getThread()<=0 || this.dimension()< this.getThread())){
 		   int rango;
@@ -310,7 +393,7 @@ public class ConcurVector {
 			       } 
 		 
 }
-	   /** Obtiene el valor maximo en el vector. */
+	   /** Obtiene el valor maximo en el vector. 
 	   public synchronized double max() {
 		   if ( ! (this.dimension()<=0 || this.getThread()<=0 || this.dimension()< this.getThread())){  
 		   int rango;
@@ -347,6 +430,6 @@ public class ConcurVector {
 			       } 
 	   
  
-}
+}*/
 }	   
 	   
