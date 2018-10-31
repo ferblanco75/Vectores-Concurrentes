@@ -14,6 +14,7 @@ import progConc.MonitorAccionesWorker;
 import progConc.MonitorBarrera;
 import progConc.MonitorSecuenciador;
 import progConc.Operacion;
+import progConc.Work;
 import progConc.Worker;
 
 public class WorkerTest {
@@ -27,6 +28,7 @@ public class WorkerTest {
 	MonitorAccionesWorker mockMonitor;
 	MonitorBarrera mockBarrera;
 	MonitorSecuenciador mockSecuenciador;
+	Work work;
 		   
 
 	@BeforeClass
@@ -69,7 +71,7 @@ public class WorkerTest {
 				
 		
 		worker= new Worker (vector1.getBuffer(),mockSecuenciador,mockBarrera,mockOperacion,1);
-	
+	//	work= new Work (vector1,vector2,)
 		
 	}
 
@@ -82,10 +84,17 @@ public class WorkerTest {
 	public void testMul() {
 		// Multiplica los valores del vector1 (1,2,3) con los valores del vector2 uno a uno (2,2,,2)
 		// y el resultado es Vector1 con (2,4,6)
-		worker.mul();
+	/*	worker.mul();
 		assertTrue(vector1.get(0)==2);
 		assertTrue(vector1.get(1)==4);
 		assertTrue(vector1.get(2)==6);
+	*/	
+		
+		
+		worker.mul();
+		assertTrue(work.getVector1().get(0)==2);
+		assertTrue(work.getVector1().get(1)==4);
+		assertTrue(work.getVector1().get(2)==6);
 		 
 	}
 	/**	

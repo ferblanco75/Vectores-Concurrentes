@@ -18,34 +18,31 @@ public class Principal {
 	
 	public static void main(String[] args) throws InterruptedException {
 		
-	//	Buffer  buffer3= new Buffer (3);
- //		Buffer  buffer4= new Buffer (4);
-	//	Buffer  buffer2= new Buffer (2);
 				
 		ConcurVector vector1= new ConcurVector(7,3);
-		//vector1.setBuffer(buffer3);
+		
 		
 		ConcurVector vector2= new ConcurVector(7,3);
-		//vector2.setBuffer(buffer4);
+		
 		
 		ConcurVector vector3= new ConcurVector(7,3);
 		
-		//vector3.setBuffer(buffer2);
+		
 	
 		ConcurVector vector4= new ConcurVector(4,2);
-	//	vector4.setBuffer(buffer3);
+	
 	    
 		ConcurVector mask= new ConcurVector(7,3);
-	  //		mask.setBuffer(buffer2);
+	 
 		 
 	  		ConcurVector v= new ConcurVector(7,3);
-		//     v.setBuffer(buffer4);
+		
 		 
 		     ConcurVector vector5= new ConcurVector(7,3);
-		// vector5.setBuffer(buffer3);
+		
 		 
 		 ConcurVector vector6= new ConcurVector(7,3);
-		 //vector6.setBuffer(buffer4);
+		
 		 
 			for (int i=0;i < vector1.dimension();i++ ) {
 			int d= i+1;
@@ -80,10 +77,11 @@ public class Principal {
 				}	
 			   System.out.println ("//");
 			
+			  // vector1.operacion1();
 			   
-			   vector1.mul2(vector2);
-			 
-			  // vector1.mul(vector2);
+			  // vector1.mul2(vector2);
+			/* 
+			  vector1.mul(vector2);
 			 
 			
 			  for (int i=0;i < vector1.dimension();i++ ) {
@@ -91,8 +89,11 @@ public class Principal {
 					}
 			  System.out.println ("//");
 			 
+			*/
+			 
 			  
-		/**
+			/*
+		
 	  			  
 			  vector1.add(vector2);
 			  
@@ -101,7 +102,7 @@ public class Principal {
 					}
 			  System.out.println ("//");
 			  
-			 
+		
 			 
 			 vector3.set(5);
 			 
@@ -109,7 +110,7 @@ public class Principal {
 					System.out.println (vector3.get(i));		
 					}
 			  System.out.println ("//");
-			  
+			 
 			  vector2.assign(vector3);
 				 
 				 for (int i=0;i < vector2.dimension();i++ ) {
@@ -117,7 +118,7 @@ public class Principal {
 						}
 				  System.out.println ("//");
 				 
-				
+				*/	 	
 				 double suma=vector4.sum();
 				   
 				   for (int i=0;i < vector4.dimension();i++ ) {
@@ -127,7 +128,7 @@ public class Principal {
 				   System.out.println ("El resultado de la suma de los elementos es: " + suma ); 
 				  
 				 
-				 			 
+				/** 			 
 				
 				 double max= vector4.max();
 					 

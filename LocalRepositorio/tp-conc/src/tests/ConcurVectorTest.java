@@ -71,17 +71,7 @@ public class ConcurVectorTest {
 		assertTrue(vector2.get(2)==2);
 	}
 	
-	
-	@Test //test para mul
-    public void test_Al_MultiplicarLosElementosDeAmbosVectores_LaPosicion_2_DelVector1_TieneAhora_elNumero_Seis() {
 		
-		//Antes de mul() el vector1 tiene en la posicion 2 el numero 3 
-		assertTrue(vector1.get(2)== 3);
-   	 vector1.mul2(vector2);
-   	//Despues de mul() el vector1 tiene en la posicion 2 el numero 6 
-   	 assertTrue(vector1.get(2)==6);
-	}
-	/**
 	
 	@Test //test para mul
      public void test_Al_MultiplicarLosElementosDeAmbosVectores_LaPosicion_2_DelVector1_TieneAhora_elNumero_Seis() {
@@ -188,5 +178,5 @@ public class ConcurVectorTest {
 		//Antes de AsssignConMask() el vector1 tiene en la posicion 6 el numero 5 
 		  assertTrue(vector1.get(6)==5);
 	}
-	 */
+	 
 }

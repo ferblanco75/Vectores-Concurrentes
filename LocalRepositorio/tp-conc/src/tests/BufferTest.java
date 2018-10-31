@@ -31,7 +31,7 @@ public class BufferTest {
 	
 	public void test_LaDimension_delBufferEs_3(){
           int expected= 3;
-          assertTrue(buffer.getData().length==expected);
+          assertTrue(buffer.getDimension() ==expected);
 	}
 	
 	@Test
@@ -56,23 +56,24 @@ public class BufferTest {
 	assertTrue(buffer.isEmpty());
   	buffer.write(dato);
 	buffer.write(dato);
-  // buffer.write(dato);
+    buffer.write(dato);
+  
       
 	assertTrue(buffer.isFull());
 	}
 
 @Test
 public void test__AlLeer_3_VecesElBuffer_VuelveA_estarVacio(){
-	//assertTrue(buffer.isFull());
+	
 	assertTrue(buffer.isEmpty());
 	 buffer.write(dato);
 	  buffer.write(dato);
 	 buffer.write(dato);
-	  assertTrue(buffer.isFull()); 
-   // buffer.read();
-   // buffer.read();
-   // buffer.read();
-//	assertTrue(buffer.isEmpty());
+	 assertTrue(buffer.isFull());
+    buffer.read();
+    buffer.read();
+    buffer.read();
+	assertTrue(buffer.isEmpty());
 
 	}
 

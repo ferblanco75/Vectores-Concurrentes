@@ -9,6 +9,7 @@ package progConc;
 public class Buffer {
 		private Object [] data;
 		private int begin = 0, end = 0;
+	    private int tamanio;
 	
 		/**
 		@Propósito : Constructor del Buffer
@@ -17,10 +18,13 @@ public class Buffer {
 		*/
 		
 		public Buffer(int n) {
-		
-			this.data= new Object [n];
+		    this.tamanio= n +1;
+			this.data= new Object [n +1];
 		}
 		
+		public int getDimension() {
+			return this.data.length -1 ;
+		}
 		
 		/**
 		@Propósito : Devuelve un array de elementos Object
@@ -28,7 +32,7 @@ public class Buffer {
 		@Param Object[] El array de elementos Object que será devuelto.
 		*/
 		public Object[] getData() {
-			return this.data;
+			return this.data ;
 		}
 		
 		/**
@@ -46,7 +50,7 @@ public class Buffer {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		data [ begin ] = o;
+		data [ begin ] =  o;
 		begin = next ( begin );
 		notifyAll ();
 		}
@@ -63,7 +67,7 @@ public class Buffer {
 			try {
 				wait ();
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 		Object result = data [ end ];
@@ -94,7 +98,7 @@ public class Buffer {
 		@Param i , es un entero positivo. 
 		 
 		*/
-		private int next ( int i) { return (i+1) %(this.data.length) ; }
+		private int next ( int i) { return (i+1) %(this.tamanio ) ; }
 
 }
 

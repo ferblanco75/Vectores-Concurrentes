@@ -12,10 +12,11 @@ public class MonitorBarrera {
 	
   }
 
-   public synchronized void esperar (Operacion operacion,Worker worker){
+   public synchronized void esperar (){
 	
 	   actual = proximo (actual );
-	  // operacion.operar(worker);
+	 // operacion.operar(worker);
+	   
 	
 	while ( actual != this.cantThreads ){
 	try {
@@ -26,7 +27,8 @@ public class MonitorBarrera {
 	}
 	}
 	
-	operacion.operar(worker);
+	
+	//operacion.operar(worker);
 	notifyAll();
 	
 	}

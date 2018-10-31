@@ -13,11 +13,9 @@ public class Worker extends Thread {
    
 	private  int contThreads=0 ;
 	private ConcurVector vector1;
-	private ConcurVector vector2;
+	
 	private ConcurVector vectorModificado;
 	private  int id;
-	private int inicio;
-	private int fin;
 	private Operacion operacion;
 	private MonitorAccionesWorker monitor;
 	private MonitorBarrera barrera;
@@ -26,7 +24,8 @@ public class Worker extends Thread {
 	private MonitorSecuenciador secuenciador;
 	
 	private Buffer buffer;
-    
+	
+	    
     /**
     @Propósito : Constructor del worker 
    	@Param monitor. es una clase monitor que regula el comportamiento del worker
@@ -39,58 +38,52 @@ public class Worker extends Thread {
 	*/
     
 	
-	public Worker (Buffer bufffer,MonitorSecuenciador secuenciador,MonitorBarrera barrera,Operacion operacion, int id ) {
+	public Worker (Buffer buffer,MonitorSecuenciador secuenciador,MonitorBarrera barrera,Operacion operacion, int id ) {
 	
 	this.buffer= buffer;
 	this.secuenciador= secuenciador;
 	this.barrera= barrera;
-  	//this.monitor= monitor;
+  	
 	this.operacion= operacion;
-	//this.vector1= vector1;
-	//this.vectorModificado= vectorModificado;
-	this.id= id;
-	//this.inicio= inicio;
-	//this.fin= fin;
 	
-	//this.threadPool= threadPool;
+	this.id= id;
+	
 
 	}
 
 	public int id() {
 		return this.id;
 	}
-	public  void mul2() {
-		Work work = (Work) this.buffer.read();  
-		System.out.println("Soy el Worker: "+ id +" y voy desde: " + work.getInicio()+ "hasta: "+ work.getInicio()  );
-				
-			 
+	
+	
+public  void operacion1() {
 		
-				double result1 = 0;
-				double result2= 0;
-					
-				for (int i= work.getInicio(); i < work.getFin(); i++) {
-					
-					result1 = (double)work.getVector1().get(i);
-					result2= (double)work.getVectorModificado().get(i);
-					
-								
-					work.getVector1().set(i,result1*result2);
-					
+		Work work	= (Work) this.buffer.read();	
+				 		
+		 System.out.println("el work" + "va desde: " + work.getInicio()+ "  hasta: "+ work.getFin() ); 		
+		 
+		    				
+			System.out.println("A");
+			
+			System.out.println("B");
+			System.out.println("C");
+			System.out.println("D");
+			  
 
-					System.out.println("resultado = "+ work.getVector1().get(i) );
-					
-				}
-			}
+}
+				
+	
+	
 		
 	
 	/** Obtiene el valor absoluto de cada elemento del vector.*/ 
 	public void abs() {
 		
-		for (int i= this.inicio; i < this.fin; i++) {
+		Work work	= (Work) this.buffer.read();	
+		for (int i= work.getInicio() ; i < work.getFin(); i++) {
 						
-					
-			this.vector1.getBuffer().write(Math.abs(this.vector1.get(i)));
-			this.vector1.set(i, (double)vector1.getBuffer().read());	
+				
+			work.getVector1().set(i, Math.abs(work.getVector1().get(i)));	
 		}
 	}
 	
@@ -98,19 +91,19 @@ public class Worker extends Thread {
 	
 	 /** Obtiene el valor promedio en el vector. */
 	public void sum(){
-		 
+		Work work	= (Work) this.buffer.read();
 		double result = 0;
 		
 	   this.contThreads=this.monitor.contThreads();  	
 		
 	    
-	    for (int i= this.inicio; i < this.fin; i++) {
-			result += this.vector1.get(i);
+	   for (int i= work.getInicio() ; i < work.getFin(); i++) {
+			result += work.getVector1().get(i);
 			
 		} 
 	    	    
-	    this.vector1.getBuffer().write(result);
-		this.vectorModificado.set (contThreads,(double)this.vector1.getBuffer().read());
+	    
+		work.getVectorModificado().set (contThreads,result);
 		
   
 	     if (this.contThreads == this.vector1.getThread() -1) {
@@ -124,21 +117,19 @@ public class Worker extends Thread {
 	 /** Obtiene el valor maximo en el vector.*/ 
 	
 	  public void max() {
-        	        
-       double current_max = vector1.get(0);
+		  Work work	= (Work) this.buffer.read();	        
+       double current_max = work.getVector1().get(0);
 		
  	   this.contThreads=this.monitor.contThreads();  	
  		
  	    
- 	    for (int i= this.inicio; i < this.fin; i++) {
- 	    	current_max = Math.max(current_max, vector1.get(i));
+ 	  for (int i= work.getInicio() ; i < work.getFin(); i++) {
+ 	    	current_max = Math.max(current_max, work.getVector1().get(i));
  			
  		} 
  	    	    
  		 		
- 	    this.vector1.getBuffer().write(current_max );
- 		
- 		this.vectorModificado.set (contThreads,(double)this.vector1.getBuffer().read());
+ 		work.getVectorModificado().set (contThreads,current_max);
  		
  			   	  	   	  
  	     if (this.contThreads == this.vector1.getThread() -1) {
@@ -152,11 +143,12 @@ public class Worker extends Thread {
 	/** Pone el valor d en todas las posiciones del vector. 
 	 * @param d, el valor a ser asignado. */
 	  public  void set(double d) {
-				
-		for (int i= this.inicio; i < this.fin; i++) {
+		
+		  Work work	= (Work) this.buffer.read();	
+		
+		  for (int i= work.getInicio() ; i < work.getFin(); i++) {
 		  	  
-		   this.vector1.getBuffer().write(d);
-		   this.vector1.set(i, (double)this.vector1.getBuffer().read());	
+		   	   work.getVector1().set(i, d);	
 		   
 	}
 }
@@ -165,11 +157,11 @@ public class Worker extends Thread {
 	/** Propósito: Copia los valores de otro vector sobre este vector.*/
 	 
 	public void assign() {
-		
-		for (int i= this.inicio; i < this.fin; i++) {
+		Work work	= (Work) this.buffer.read();	
+		for (int i= work.getInicio() ; i < work.getFin(); i++) {
 				 		   
-		  this.vector1.getBuffer().write(this.vectorModificado.get(i));
-		  this.vector1.set(i, (double)this.vector1.getBuffer().read());
+		  
+		  work.getVector1().set(i, work.getVectorModificado().get(i));
 		   
 		}
 	}
@@ -182,12 +174,13 @@ public class Worker extends Thread {
 	 * @precondition dimension() == mask.dimension() && dimension() == v.dimension().*/ 
 	
 	    public void assignConMask(ConcurVector mask)	 {
-		this.vector2=mask;
-		for (int i= this.inicio; i < this.fin; i++) {
-		    if (this.vector2.get(i) >= 0){
+				
+		Work work	= (Work) this.buffer.read();	
+		for (int i= work.getInicio() ; i < work.getFin(); i++) {
 		
-			this.vector1.getBuffer().write(this.vectorModificado.get(i));
-			this.vector1.set(i, (double)this.vector1.getBuffer().read());
+			if (mask.get(i) >= 0){
+		
+			 work.getVector1().set(i, work.getVectorModificado().get(i));
 		    }	
 		}
 	
@@ -197,23 +190,19 @@ public class Worker extends Thread {
 	 
 	public  void mul() {
 		       
-System.out.println("Soy el Worker: "+ id +" y voy desde: " + this.inicio+ "hasta: "+ this.fin  );
-		
-		double result1 = 0;
+  		double result1 = 0;
 		double result2= 0;
 			
-		for (int i= this.inicio; i < this.fin; i++) {
+		Work work	= (Work) this.buffer.read();	
+		for (int i= work.getInicio() ; i < work.getFin(); i++) {
 			
-			result1 = (double)this.vector1.get(i);
-			result2= (double)this.vectorModificado.get(i);
+			result1 = work.getVector1().get(i);
+			result2= work.getVectorModificado().get(i);
 			
-						
-		//	this.vector1.set(i,result1*result2);
-			this.vector1.getBuffer().write(result1 * result2);
-			
-			this.vector1.set(i,(double)this.vector1.getBuffer().read() );
+									
+			work.getVector1().set(i,(result1 * result2) );
 
-			System.out.println("resultado = "+ vector1.get(i) );
+		
 			
 		}
 	}
@@ -229,14 +218,15 @@ System.out.println("Soy el Worker: "+ id +" y voy desde: " + this.inicio+ "hasta
 		       	double result1 = 0;
 				double result2= 0;
 				
-				for (int i= this.inicio; i < this.fin; i++) {
+				Work work	= (Work) this.buffer.read();	
+				for (int i= work.getInicio() ; i < work.getFin(); i++) {
 					
-					result1 = (double)this.vector1.get(i);
-					result2= (double)this.vectorModificado.get(i);
 					
-					this.vector1.getBuffer().write(result1 + result2);
+					result1 = work.getVector1().get(i);
+					result2= work.getVectorModificado().get(i);
+											
 					
-					this.vector1.set(i,(double)this.vector1.getBuffer().read() );	
+					work.getVector1().set(i,(result1 + result2) );
 		    	
 		   	       
 		}
@@ -247,13 +237,14 @@ System.out.println("Soy el Worker: "+ id +" y voy desde: " + this.inicio+ "hasta
 		/** Propósito: Ejecuta la operacion en cuestión, es invocada desde el mensaje start()
 		 * 
 		 */	
-	/*public void run () {
+	//public void run () {
+		
+   // operacion.operar(this);
+    // this.secuenciador.secuenciar(operacion, this);
+    // this.barrera.esperar(/*operacion,this*/);
+//	}	
 		
 
-
-	}	
-		
-*/
 
 }
 

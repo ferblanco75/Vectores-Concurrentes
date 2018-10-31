@@ -13,9 +13,9 @@ public class MonitorSecuenciador {
 	//	this.barrera= new MonitorBarrera(this.n)  ;
 	  }
 
-	   public synchronized void secuenciar (Operacion operacion,Worker worker){
+	   public synchronized void secuenciar (Operacion operacion, Worker worker){
 		
-		   
+		//   operacion.operar(worker);  
 		
 		while ( actual != worker.id() /*this.cantThreads*/ ){
 		try {
@@ -31,8 +31,9 @@ public class MonitorSecuenciador {
 		//System.out.println("Soy el worker: " + worker.id());
 		//worker.run();
 		
-		operacion.operar(worker);
+		//operacion.operar(worker);
 		//this.barrera.esperar(operacion, worker);
+		
 		actual = proximo (actual );
 		
 		//System.out.println("Soy el worker: " + worker.id()+ " y voy desde: " +   " hasta:" +);
