@@ -108,29 +108,32 @@ public class ConcurVectorTest {
    			assertTrue(vector1.get(2)==3);
    			
 	}
-	
+	/*
 		@Test //test para sum
     public void test_Al_sumarTodosLosElementosDeLVector1_ElResultadoEs_28() {
 		double expected= 28;
    	 double suma= vector1.sum();
 		assertTrue(suma== expected);
 	}
-	
-	
+	*/
+	/*
 	@Test //test para Max
     public void test_AlPedirElMaximoElementosDeLVector1_ElResultadoEs_7() {
 		double expected= 7;
    	    double max= vector1.max();
 		assertTrue(max== expected);
 	}
-	
+	*/
+	/*
 	@Test //test para Prod
     public void test_AlPedirElProductoDelVector1_SegunElVector2_ElResultadoEs_56() {
 		double expected= 56;
    	    double producto= vector1.prod(vector2);
 		assertTrue(producto== expected);
 	}
+	*/
 	
+	/**
 	@Test //test para Norm
     public void test_AlPedirLaNormaDelVector1__ElResultadoEs_RaizCuadrada_de_140() {
 		double expected= Math.sqrt(140);
@@ -138,13 +141,15 @@ public class ConcurVectorTest {
 		assertTrue(norma== expected);
 	}
 	
+	*/
+	/*
 	@Test //test para Mean
     public void test_AlPedirElPromedioDeLVector1_ElResultadoEs_4() {
 		double expected= 4;
    	    double promedio= vector1.mean();
 		assertTrue(promedio== expected);
 	}
-	
+	*/
 
 	@Test //test para assign
     public void test_AlAsignarTodosLosElementosDelVector2_AlVector1_Este_TieneAhoraEnLaPosicion_2_alNumero_2() {

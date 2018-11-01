@@ -11,7 +11,8 @@ import javax.swing.JOptionPane;
  */
 public class Worker extends Thread {
    
-	private  int contThreads=0 ;
+	private int cont=0;
+	private  int contThreads;
 	private ConcurVector vector1;
 	
 	private ConcurVector vectorModificado;
@@ -24,6 +25,7 @@ public class Worker extends Thread {
 	private MonitorSecuenciador secuenciador;
 	
 	private Buffer buffer;
+	
 	
 	    
     /**
@@ -38,12 +40,12 @@ public class Worker extends Thread {
 	*/
     
 	
-	public Worker (Buffer buffer,MonitorSecuenciador secuenciador,MonitorBarrera barrera,Operacion operacion, int id ) {
+	public Worker (Buffer buffer, MonitorAccionesWorker monitor,/*MonitorSecuenciador secuenciador,MonitorBarrera barrera,*/Operacion operacion, int id ) {
 	
 	this.buffer= buffer;
 	this.secuenciador= secuenciador;
 	this.barrera= barrera;
-  	
+  	this.monitor= monitor;
 	this.operacion= operacion;
 	
 	this.id= id;
@@ -94,21 +96,26 @@ public  void operacion1() {
 		Work work	= (Work) this.buffer.read();
 		double result = 0;
 		
-	   this.contThreads=this.monitor.contThreads();  	
 		
+	   this.contThreads = this.monitor.contThreads();  	
+		System.out.println("contThreads= " + this.contThreads);
 	    
 	   for (int i= work.getInicio() ; i < work.getFin(); i++) {
 			result += work.getVector1().get(i);
 			
 		} 
 	    	    
-	    
+	   
 		work.getVectorModificado().set (contThreads,result);
+	  
+	   System.out.println("el valor parcial de la suma es:= " + work.getVectorModificado().get(contThreads));
 		
+		   
+	   
   
-	     if (this.contThreads == this.vector1.getThread() -1) {
+	    if (this.contThreads == work.getVector1().getThread() -1) {
 		
-		     this.contThreads=this.monitor.decrementarThreads();
+		    this.contThreads=this.monitor.decrementarThreads();
 		   
 	   }
      	      
@@ -132,7 +139,7 @@ public  void operacion1() {
  		work.getVectorModificado().set (contThreads,current_max);
  		
  			   	  	   	  
- 	     if (this.contThreads == this.vector1.getThread() -1) {
+ 	     if (this.contThreads == work.getVector1().getThread() -1) {
  		
  		     this.contThreads=this.monitor.decrementarThreads();
  		     	 		     
@@ -202,9 +209,7 @@ public  void operacion1() {
 									
 			work.getVector1().set(i,(result1 * result2) );
 
-		
-			
-		}
+	  }
 	}
 	
 	

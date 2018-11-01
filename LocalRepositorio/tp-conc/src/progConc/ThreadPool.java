@@ -25,12 +25,13 @@ public class ThreadPool {
 	 * a los valores de los parámetros  threads y load. 
 	 * @param buffer */
 
-	public ThreadPool(int threads, Buffer buffer) {
+	public ThreadPool(int threads, Buffer buffer, MonitorAccionesWorker monitor) {
 				
 		this.inicio= 0;
 		this.fin= 0;
 		this.threads = threads;
 		this.buffer= buffer;
+		this.monitor=monitor;
 		
 			
 	}
@@ -70,7 +71,7 @@ public class ThreadPool {
      			
      		
      			
-     			 this.workers[i]= new Worker (this.buffer,this.secuenciador,this.barrera,this.operacion, i);
+     			 this.workers[i]= new Worker (this.buffer, this.monitor,this.operacion, i);
      			 	 		
      			    			
      		    		  

@@ -29,7 +29,7 @@ public class WorkerTest {
 	MonitorBarrera mockBarrera;
 	MonitorSecuenciador mockSecuenciador;
 	Work work;
-		   
+	int inicio,fin;	   
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -42,18 +42,19 @@ public class WorkerTest {
 		dummyMonitor= mock(MonitorAccionesWorker.class);
 		mockBarrera= mock(MonitorBarrera.class); 
 		mockSecuenciador= mock(MonitorSecuenciador.class); 
-				
-	//	buffer= new Buffer(3);
+		inicio= 0;
+		fin=3;
+	 
 		
 		vector1= new ConcurVector (3,2);
-	//	vector1.setBuffer(buffer);
+	
 		
 		vector2= new ConcurVector (3,2);
-	//	vector2.setBuffer(buffer);
+	
 		
 		
         mask= new ConcurVector (3,2);
-	//	mask.setBuffer(buffer);
+	
 		
 		for (int i=0;i < vector1.dimension();i++ ) {
 			double d= i+1;
@@ -70,8 +71,8 @@ public class WorkerTest {
 				mask.set(2,1);	
 				
 		
-		worker= new Worker (vector1.getBuffer(),mockSecuenciador,mockBarrera,mockOperacion,1);
-	//	work= new Work (vector1,vector2,)
+		
+		work= new Work (vector1,vector2,inicio,fin);
 		
 	}
 
@@ -84,43 +85,39 @@ public class WorkerTest {
 	public void testMul() {
 		// Multiplica los valores del vector1 (1,2,3) con los valores del vector2 uno a uno (2,2,,2)
 		// y el resultado es Vector1 con (2,4,6)
-	/*	worker.mul();
-		assertTrue(vector1.get(0)==2);
-		assertTrue(vector1.get(1)==4);
-		assertTrue(vector1.get(2)==6);
-	*/	
+		vector1.mul(vector2);
 		
-		
-		worker.mul();
 		assertTrue(work.getVector1().get(0)==2);
 		assertTrue(work.getVector1().get(1)==4);
 		assertTrue(work.getVector1().get(2)==6);
-		 
+	
+				
+		
 	}
-	/**	
+	
 	@Test
 	public void testAssign() {
 		
 		// El vector2 tiene en todos sus elementos el valor 2, y son asignados al vector1
 		 double expected=2;
-		worker.assign();
-		 assertTrue(vector1.get(0)==expected);
-		 assertTrue(vector1.get(1)==expected);
-		 assertTrue(vector1.get(2)==expected);
+		 vector1.assign(vector2);
+		 assertTrue(work.getVector1().get(0)==expected);
+		 assertTrue(work.getVector1().get(1)==expected);
+		 assertTrue(work.getVector1().get(2)==expected);
 }
 	
 	
 	@Test
 	public void testAbs() {
-		double expected=1;
+		double expected= 1;
 		vector1.set(0,-1);
 		vector1.set(1,-1);
 		vector1.set(2,-1);
 		// Al hace el valor absoluto del vector1 con sus valores a -1 los pasa todos a  1
-		worker.abs();
-		 assertTrue(vector1.get(0)==1);
-		 assertTrue(vector1.get(1)==1);
-		 assertTrue(vector1.get(2)==1);
+		vector1.abs();
+		 assertTrue(work.getVector1().get(0)==expected);
+		 assertTrue(work.getVector1().get(1)==expected);
+		 assertTrue(work.getVector1().get(2)==expected);
 		
 }
 	
@@ -129,64 +126,55 @@ public class WorkerTest {
 		// En el vector mask la última posición tiene un valor positivo, por tanto
 		// es la única posición que se sobreescribe en Vector1 con el valor 2 del vector2  
 		
-		worker.assignConMask(mask);
-		 assertTrue(vector1.get(0)==1);
-		 assertTrue(vector1.get(1)==2);
-		 assertTrue(vector1.get(2)==2);
+		vector1.assign(mask,vector2);
+		 assertTrue(work.getVector1().get(0)==1);
+		 assertTrue(work.getVector1().get(1)==2);
+		 assertTrue(work.getVector1().get(2)==2);
 	}
 	
 	@Test
 	public void testSum() {
 		//Suma los elementos del vector1 1 + 2 +3 = 6 
-		worker.sum();
+		vector1.sum();
 		double expected= 6;
-		 assertTrue(vector2.get(0)==expected);
+		 assertTrue(work.getVector1().get(0)==expected);
 		 
 	}
 	
 	@Test
 	public void testMax() {
 		//Devuelve el máximo valor de los elementos de Vector1 (1,2,3) = máximo 3  
-		worker.max();
+		vector1.max();
 		double expected= 3;
-		 assertTrue(vector2.get(0)==expected);
+		 assertTrue(work.getVector1().get(0)==expected);
 		 
 	}
 	
-	@Test
-	public void testMul() {
-		// Multiplica los valores del vector1 (1,2,3) con los valores del vector2 uno a uno (2,2,,2)
-		// y el resultado es Vector1 con (2,4,6)
-		worker.mul();
-		assertTrue(vector1.get(0)==2);
-		assertTrue(vector1.get(1)==4);
-		assertTrue(vector1.get(2)==6);
-		 
-	}
+	
 	
 	@Test
 	public void testAdd() {
 		// Suma los valores del vector1 (1,2,3) con los valores del vector2 uno a uno (2,2,,2)
 		// y el resultado es Vector1 con (3,4,5)
 
-		worker.add();
-		assertTrue(vector1.get(0)==3);
-		assertTrue(vector1.get(1)==4);
-		assertTrue(vector1.get(2)==5);
+		vector1.add(vector2);
+		assertTrue(work.getVector1().get(0)==3);
+		assertTrue(work.getVector1().get(1)==4);
+		assertTrue(work.getVector1().get(2)==5);
 		 
 	}
 	
 	@Test
 	public void testSet() {
 		// Pone todos los elementos del vector1 con el valor pasado por parámetro en set, en este caso es 3 
-		worker.set(3);
+		vector1.set(3);
 		double expected= 3;
-		assertTrue(vector1.get(0)==expected);
-		assertTrue(vector1.get(1)==expected);
-		assertTrue(vector1.get(2)==expected);
+		assertTrue(work.getVector1().get(0)==expected);
+		assertTrue(work.getVector1().get(1)==expected);
+		assertTrue(work.getVector1().get(2)==expected);
 		 
 	}
 	
-	*/
+	
 	
 }

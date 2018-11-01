@@ -22,7 +22,7 @@ public class ThreadPoolTest {
 	Operacion dummyOperacion;
 	
     ConcurVector vector1, dummyVector;
-  
+    
     
 	
 	@BeforeClass
@@ -47,7 +47,7 @@ public class ThreadPoolTest {
 	@Test
 	public void testInitializeWorkers() throws InterruptedException {
 		
-		threadPool.initializeWorkers(dummyOperacion/*,vector1,dummyVector*/);
+		threadPool.initializeWorkers(dummyOperacion);
 		int expoected= 7;
 		// El último thread va hasta el fin que es la dimension del vector
 		assertTrue(threadPool.getFin()-threadPool.getRango() == 7);

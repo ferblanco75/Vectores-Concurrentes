@@ -5,12 +5,12 @@ package progConc;
 */
 public class MonitorAccionesWorker {
     
-	private int contThreads,actual;	
+	private int contThreads;	
 	 
    
     
 	public MonitorAccionesWorker() {
-		actual= 0;
+		
 		contThreads = 0;
 		  }
 	

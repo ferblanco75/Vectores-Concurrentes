@@ -14,7 +14,7 @@ public class ConcurVector {
 	private static int load= 2;
 	private int dimension, threads;
 	private Work work;
-	private List <Work> works= new ArrayList <Work>();
+	
 	private int inicio, fin;
 	private int rango, resto;
 	
@@ -24,6 +24,7 @@ public class ConcurVector {
 	private Buffer buffer;
 	private MonitorBarrera barrera;
 	private MonitorSecuenciador secuenciador;
+	private MonitorAccionesWorker monitor;
 	
 		
 	/** Constructor del ConcurVector.
@@ -34,11 +35,13 @@ public class ConcurVector {
 	     	this.dimension= dimension;
 			this.elements= new  double[dimension];
 			
+			this.monitor= new MonitorAccionesWorker();
 			this.threads= threads;
 			this.buffer= new Buffer(threads);
-			this.threadPool=  new ThreadPool (threads,this.buffer);
+			this.threadPool=  new ThreadPool (threads,this.buffer,this.monitor);
 			this.barrera= new MonitorBarrera(threads);
 			this.secuenciador= new MonitorSecuenciador(threads);
+			
 	}			
 		
 
@@ -105,7 +108,7 @@ public class ConcurVector {
 		
 		 List <Work> works = this.getTrabajoConCargaDistribuida(this,aux);
 		 
-		 for (Work work: this.works) {
+		 for (Work work: works) {
 				System.out.println("el work" + "va desde: " + work.getInicio()+ "  hasta: "+ work.getFin() ); 
 			}
 		 System.out.println("//" ); 
@@ -113,7 +116,7 @@ public class ConcurVector {
 		 System.out.println("El tamaño del buffer es :" + this.buffer.getDimension()); 
 		 
 		
-		  for (Work work: this.works) {
+		  for (Work work: works) {
 			  this.buffer.write(work);
 		    	     
 			 }
@@ -151,7 +154,7 @@ public class ConcurVector {
 		List <Work> works = this.getTrabajoConCargaDistribuida(this,aux);
 		
 		
-		for (Work work: this.works) {
+		for (Work work: works) {
 			  this.buffer.write(work);
 		    	     
 			 }
@@ -245,7 +248,7 @@ public class ConcurVector {
 		     List <Work> works = this.getTrabajoConCargaDistribuida(this,aux);
 				
 				
-				for (Work work: this.works) {
+				for (Work work: works) {
 					  this.buffer.write(work);
 				    	     
 					 }
@@ -275,7 +278,7 @@ public class ConcurVector {
 			List <Work> works = this.getTrabajoConCargaDistribuida(this,vector);
 			
 			
-			for (Work work: this.works) {
+			for (Work work: works) {
 				  this.buffer.write(work);
 			    	     
 				 }
@@ -309,7 +312,7 @@ public class ConcurVector {
           List <Work> works = this.getTrabajoConCargaDistribuida(this,vector);
 			
 			
-			for (Work work: this.works) {
+			for (Work work: works) {
 				  this.buffer.write(work);
 			    	     
 				 }
@@ -341,7 +344,7 @@ public class ConcurVector {
 		 
 		 List <Work> works = this.getTrabajoConCargaDistribuida(this,vector);
 		 
-		 for (Work work: this.works) {
+		 for (Work work: works) {
 				System.out.println("el work" + "va desde: " + work.getInicio()+ "  hasta: "+ work.getFin() ); 
 			}
 		 System.out.println("//" ); 
@@ -349,7 +352,7 @@ public class ConcurVector {
 		 System.out.println("El tamaño del buffer es :" + this.buffer.getDimension()); 
 		 
 		
-		  for (Work work: this.works) {
+		  for (Work work: works) {
 			  this.buffer.write(work);
 		    	     
 			 }
@@ -379,7 +382,7 @@ public class ConcurVector {
 		 Operacion operacion= new Add();
 		 List <Work> works = this.getTrabajoConCargaDistribuida(this,vector);
 		 
-		 for (Work work: this.works) {
+		 for (Work work: works) {
 			  this.buffer.write(work);
 		    	     
 			 }
@@ -405,35 +408,33 @@ public class ConcurVector {
 			  	   
 		   ConcurVector aux = new ConcurVector(this.dimension(),this.getThread());
 		    		   
-			// aux.setBuffer(this.getBuffer());
 			 aux.assign(this);
 		     rango= aux.dimension()/aux.getThread();
-		     
-		     	     
-		
+		    		
 			  while (aux.dimension() > 1) {
 		
 	     	     if (rango != aux.getThread()) {
 	 	   	          diferenciaThreadsRango = Math.abs(aux.getThread() -  rango); 
 		         }
-		    		  
+	 	    		  
 		    ConcurVector auxModificado = new ConcurVector(aux.getThread(),diferenciaThreadsRango);
 		    
 		   // auxModificado.setBuffer(this.getBuffer());
 		   // this.threadPool.initializeWorkers(operacion,aux,auxModificado);
 		    List <Work> works = this.getTrabajoConCargaDistribuida(aux,auxModificado);
 			 
-			 for (Work work: this.works) {
-				  this.buffer.write(work);
+			 for (Work work: works) {
+				  aux.getBuffer().write(work);
 			    	     
 				 }
-			 this.threadPool.initializeWorkers(operacion);
-		  
+			 aux.getThreadPool().initializeWorkers(operacion);
+			 System.out.println("El valor parcial de la suma en el concurVector es= " + auxModificado.get(0));
 		   aux= auxModificado;
 		   rango= aux.dimension()/aux.getThread(); 
-			
+		   	
 	}	
-	  		  
+	  
+		  
 	 return ( aux.get(0)); 
   
 		  
@@ -454,7 +455,7 @@ public class ConcurVector {
 	  		    
 	    ConcurVector aux = new ConcurVector(this.dimension(),this.getThread());
 	  
-	    //  aux.setBuffer(this.getBuffer());
+	  
 		  aux.assign(this);
 	    
 	     rango= aux.dimension()/aux.getThread();
@@ -469,17 +470,17 @@ public class ConcurVector {
 	         		  //this.threadPool.initializeWorkers(operacion,aux,auxModificado);
 	            	   List <Work> works = this.getTrabajoConCargaDistribuida(aux,auxModificado);
 	      			 
-	      			 for (Work work: this.works) {
-	      				  this.buffer.write(work);
+	      			 for (Work work: works) {
+	      				  aux.getBuffer().write(work);
 	      			    	     
 	      				 }
-	      			 this.threadPool.initializeWorkers(operacion);	 		
+	      			 aux.getThreadPool().initializeWorkers(operacion);	 		
 	         		   aux= auxModificado;
 	         		   rango= aux.dimension()/aux.getThread(); 
 	
    }	
 	 	  		  
-	  return ( aux.get(0));
+	  return (aux.get(0));
 		   }   
 			 
 			  else {
@@ -491,8 +492,9 @@ public class ConcurVector {
 }
 	 
 	 public List <Work> getTrabajoConCargaDistribuida(ConcurVector vector1,ConcurVector vector2) {
-		 
-			vector1.rango= (vector1.dimension / vector1.threads);
+		 List <Work> works= new ArrayList <Work>();
+			
+		 vector1.rango= (vector1.dimension / vector1.threads);
 			vector1.resto= (vector1.dimension % vector1.threads); 
 			 
 			vector1.inicio= 0;
@@ -506,7 +508,7 @@ public class ConcurVector {
 			
 			vector1.work= new Work (vector1,vector2,vector1.inicio,vector1.fin);
 			 
-			vector1.works.add(vector1.work);
+			works.add(vector1.work);
 			 
 					 
 			vector1.inicio= vector1.fin;
@@ -516,7 +518,7 @@ public class ConcurVector {
 			
 			
 			
-			return vector1.works;
+			return works;
 		 	
 		 
 	}

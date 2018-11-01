@@ -30,6 +30,8 @@ public class Principal {
 		
 	
 		ConcurVector vector4= new ConcurVector(4,2);
+		
+		
 	
 	    
 		ConcurVector mask= new ConcurVector(7,3);
@@ -42,6 +44,9 @@ public class Principal {
 		
 		 
 		 ConcurVector vector6= new ConcurVector(7,3);
+		 
+		 
+		 ConcurVector vector40= new ConcurVector(4,2);
 		
 		 
 			for (int i=0;i < vector1.dimension();i++ ) {
@@ -80,7 +85,7 @@ public class Principal {
 			  // vector1.operacion1();
 			   
 			  // vector1.mul2(vector2);
-			/* 
+			/*
 			  vector1.mul(vector2);
 			 
 			
@@ -89,9 +94,7 @@ public class Principal {
 					}
 			  System.out.println ("//");
 			 
-			*/
-			 
-			  
+							  
 			/*
 		
 	  			  
@@ -119,26 +122,29 @@ public class Principal {
 				  System.out.println ("//");
 				 
 				*/	 	
-				 double suma=vector4.sum();
+				
+			   double suma=vector1.sum();
 				   
-				   for (int i=0;i < vector4.dimension();i++ ) {
-				   System.out.println ("[" + i + "] : = "+vector4.get(i) ); 
+				   for (int i=0;i < vector1.dimension();i++ ) {
+				   System.out.println ("[" + i + "] : = "+vector1.get(i) ); 
 				   
 				   }
 				   System.out.println ("El resultado de la suma de los elementos es: " + suma ); 
-				  
 				 
-				/** 			 
+				 
+					vector40.set(0,5);
+					vector40.set(1,6);
+					vector40.set(2,8);
+					vector40.set(3,1);
 				
-				 double max= vector4.max();
+				 double max= vector40.max();
 					 
-					 for (int i=0;i < vector4.dimension();i++ ) {
-							System.out.println (vector4.get(i));		
+					 for (int i=0;i < vector40.dimension();i++ ) {
+							System.out.println (vector40.get(i));		
 							}
 					  System.out.println ("//");
 					  System.out.println ("El máximo elemento es: " + max );
-					  
-			 
+			/**
 			     	 				  
 					  mask.set(0, -1);
 					  mask.set(1, 1);
