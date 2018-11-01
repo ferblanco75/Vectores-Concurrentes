@@ -96,51 +96,7 @@ public class ConcurVector {
 	/*******************Desde aquí Comienzan la Operaciones concurentes ******************/
 	
 	
-	 
-	 public synchronized void operacion1() {
-			
-		 if ( ! (this.dimension()<=0 || this.getThread()<=0 || this.dimension()< this.getThread())){
-				
-				
-				
-		 Operacion operacion= new Operacion1();
-		 ConcurVector aux = new ConcurVector(this.dimension(),this.getThread());
-		
-		 List <Work> works = this.getTrabajoConCargaDistribuida(this,aux);
-		 
-		 for (Work work: works) {
-				System.out.println("el work" + "va desde: " + work.getInicio()+ "  hasta: "+ work.getFin() ); 
-			}
-		 System.out.println("//" ); 
-		 
-		 System.out.println("El tamaño del buffer es :" + this.buffer.getDimension()); 
-		 
-		
-		  for (Work work: works) {
-			  this.buffer.write(work);
-		    	     
-			 }
-		 
-			
-		   this.threadPool.initializeWorkers(operacion);
-		    
-		   //  operacion.operar(this.workers[i]);
-		  //this.barrera.esperar();
-		  
-	 }
-	  
-		 else {
-				JOptionPane.showMessageDialog(null, "Número inválido, no se puede realizar la operación Set (d)");
-				
-		       } 
-		
-	 }
-	 
-	 
-	 
-	 
-	 	
-	  
+	
 	   // Obtiene el valor absoluto de cada elemento del vector. 
 	public synchronized void abs() {
 		
